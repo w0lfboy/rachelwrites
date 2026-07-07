@@ -1,0 +1,9 @@
+{
+  // Static-assets Worker: no server code, just serve the files in this repo.
+  // Cloudflare's "Workers Builds" pipeline runs `npx wrangler deploy`, which reads this.
+  "name": "rachelwrites",
+  "compatibility_date": "2025-01-01",
+  "assets": {
+    "directory": "./"
+  }
+}
