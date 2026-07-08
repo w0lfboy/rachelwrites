@@ -13,20 +13,51 @@
   * { box-sizing: border-box; }
   html, body { margin: 0; }
   html { scroll-behavior: smooth; }
+  :root { --ease: cubic-bezier(.22,.61,.36,1); }
   ::selection { background: #857438; color: #F4EEE1; }
   a { color: #6f5a2e; text-decoration: none; }
   a:hover { color: #3A4651; }
+  a:focus-visible, .btn:focus-visible, .card:focus-visible { outline: 2px solid #857438; outline-offset: 3px; border-radius: 1px; }
+
+  /* anchored sections clear the sticky nav */
+  #top, #novel, #find, #read, #writing, #recipes { scroll-margin-top: 96px; }
+
   .navlink { position: relative; }
-  .navlink::after { content:""; position:absolute; left:0; bottom:-4px; height:1px; width:0; background:#857438; transition:width .28s ease; }
+  .navlink::after { content:""; position:absolute; left:0; bottom:-4px; height:1px; width:0; background:#857438; transition:width .28s var(--ease); }
   .navlink:hover::after { width:100%; }
-  .btn { transition: background .25s ease, color .25s ease, transform .25s ease; }
+
+  .btn { transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease); }
   .btn:hover { transform: translateY(-1px); }
-  .btn-solid:hover { background:#5A322F !important; color:#F4EEE1 !important; }
+  .btn-solid:hover { background:#5A322F !important; color:#F4EEE1 !important; box-shadow:0 16px 30px -18px rgba(90,50,47,.55); }
   .btn-ghost:hover { background:#3A4651 !important; color:#F4EEE1 !important; }
-  .card { transition: transform .3s ease, box-shadow .3s ease; }
+  /* arrows glide on hover */
+  .arrow { display:inline-block; transition: transform .3s var(--ease); }
+  .btn:hover .arrow, .card:hover .cardcta .arrow { transform: translateX(4px); }
+
+  .card { transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
   .card:hover { transform: translateY(-4px); box-shadow: 0 26px 46px -28px rgba(20,26,30,0.42); }
   .card:hover .cardcta { color:#3A4651; }
-  .cardcta { transition: color .25s ease; }
+  .cardcta { transition: color .25s var(--ease); }
+
+  /* sparrow plate lifts a touch on hover */
+  .plate { transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
+  .plate:hover { transform: translateY(-5px); box-shadow: 0 52px 92px -44px rgba(20,26,30,0.6); }
+
+  /* sticky nav settles into a frosted bone bar once you scroll */
+  .site-header { position: sticky; top: 0; z-index: 50; background: transparent; border-bottom: 1px solid transparent;
+    transition: background .4s var(--ease), box-shadow .4s var(--ease), border-color .4s var(--ease); }
+  .site-header.scrolled { background: rgba(234,225,206,0.82); -webkit-backdrop-filter: blur(9px); backdrop-filter: blur(9px);
+    border-bottom-color: rgba(58,70,81,0.14); box-shadow: 0 10px 30px -24px rgba(20,26,30,0.5); }
+
+  /* scroll-reveal — entrance via animation so it never fights hover transitions */
+  .js [data-reveal], .js [data-reveal-stagger] > * { opacity: 0; }
+  .js [data-reveal].is-visible, .js [data-reveal-stagger] > *.is-visible { animation: rfReveal .8s var(--ease) both; }
+  @keyframes rfReveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+  /* gentle parallax on the Blue Ridge band (desktop pointer devices only) */
+  @media (hover: hover) and (min-width: 861px) {
+    .parallax { background-attachment: fixed; }
+  }
 
   /* Responsive — collapses the multi-column grids on small screens.
      Desktop rendering is unchanged; inline grid styles are overridden here. */
@@ -44,6 +75,15 @@
     section, .band-inner { padding-left: 22px !important; padding-right: 22px !important; }
     .read-band { padding: 52px 24px !important; }
   }
+
+  /* respect reduced-motion: no reveal, no parallax, no transform hovers */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .js [data-reveal], .js [data-reveal-stagger] > * { opacity: 1 !important; animation: none !important; }
+    .parallax { background-attachment: scroll !important; }
+    .btn:hover, .card:hover, .plate:hover { transform: none !important; }
+    .arrow { transition: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -51,30 +91,32 @@
 <div style="background:#EAE1CE; font-family:'EB Garamond', Georgia, serif; color:#33301F; width:100%; overflow-x:hidden;">
 
   <!-- ===================== NAV ===================== -->
-  <header class="site-header" style="max-width:1200px; margin:0 auto; padding:26px 40px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
-    <a href="#top" style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:22px; letter-spacing:0.26em; color:#3A4651; text-transform:uppercase;">Rachel Fletcher</a>
-    <nav style="display:flex; align-items:center; gap:34px; font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px; color:#4a4432;">
-      <a class="navlink" href="#writing" style="color:#4a4432;">Writing</a>
-      <a class="navlink" href="#recipes" style="color:#4a4432;">Recipes</a>
-      <a class="navlink" href="#find" style="color:#4a4432;">Explore</a>
-      <a class="btn btn-ghost navlink" href="https://rachelfletcher.substack.com/" target="_blank" rel="noopener" style="border:1px solid #3A4651; color:#3A4651; padding:9px 20px; letter-spacing:0.2em;">Read Along</a>
-    </nav>
+  <header class="site-header" style="padding:26px 40px;">
+    <div style="max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+      <a href="#top" style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:22px; letter-spacing:0.26em; color:#3A4651; text-transform:uppercase;">Rachel Fletcher</a>
+      <nav style="display:flex; align-items:center; gap:34px; font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px; color:#4a4432;">
+        <a class="navlink" href="#writing" style="color:#4a4432;">Writing</a>
+        <a class="navlink" href="#recipes" style="color:#4a4432;">Recipes</a>
+        <a class="navlink" href="#find" style="color:#4a4432;">Explore</a>
+        <a class="btn btn-ghost navlink" href="https://rachelfletcher.substack.com/" target="_blank" rel="noopener" style="border:1px solid #3A4651; color:#3A4651; padding:9px 20px; letter-spacing:0.2em;">Read Along</a>
+      </nav>
+    </div>
   </header>
 
   <!-- ===================== HERO ===================== -->
   <section id="top" class="hero-grid" style="max-width:1200px; margin:0 auto; padding:40px 40px 96px; display:grid; grid-template-columns:1.15fr 0.85fr; gap:64px; align-items:center;">
-    <div class="hero-copy">
+    <div class="hero-copy" data-reveal-stagger>
       <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.4em; font-size:12px; color:#857438; margin-bottom:26px;">Folkloric fiction &amp; essays</div>
       <h1 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(40px,5.6vw,72px); line-height:1.05; letter-spacing:-0.01em; margin:0; color:#3A4651; text-wrap:balance;">Making meaning in a world of <span style="font-style:italic; color:#857438;">already</span> and <span style="font-style:italic; color:#857438;">not yet.</span></h1>
       <p style="font-size:20px; line-height:1.74; color:#4a4432; max-width:520px; margin:30px 0 38px;">I write folkloric fiction &amp; share personal essays inspired by my home in the Shenandoah Valley.</p>
       <div class="hero-actions" style="display:flex; align-items:center; gap:22px; flex-wrap:wrap;">
-        <a class="btn btn-solid" href="https://rachelfletcher.substack.com/" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; background:#3A4651; color:#F4EEE1; font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:13px; padding:16px 30px;">Read along <span style="font-size:15px;">&rarr;</span></a>
+        <a class="btn btn-solid" href="https://rachelfletcher.substack.com/" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; background:#3A4651; color:#F4EEE1; font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:13px; padding:16px 30px;">Read along <span class="arrow" style="font-size:15px;">&rarr;</span></a>
         <span style="font-family:'EB Garamond',serif; font-style:italic; font-size:16px; color:#7d7156;">New letters every other week.</span>
       </div>
     </div>
-    <div style="display:flex; justify-content:center;">
+    <div style="display:flex; justify-content:center;" data-reveal>
       <div style="position:relative;">
-        <div style="position:relative; padding:22px; background:#F4EEE1; border:1px solid rgba(58,70,81,0.22); box-shadow:0 40px 80px -40px rgba(20,26,30,0.5);">
+        <div class="plate" style="position:relative; padding:22px; background:#F4EEE1; border:1px solid rgba(58,70,81,0.22); box-shadow:0 40px 80px -40px rgba(20,26,30,0.5);">
           <div style="position:absolute; inset:10px; border:1px solid rgba(58,70,81,0.16); pointer-events:none;"></div>
           <img src="assets/sparrow-mark-trim.png" alt="A sparrow carrying a hand-tied posey of blackberry bramble, juniper, and English ivy" style="display:block; width:300px; max-width:60vw; height:auto;"/>
         </div>
@@ -83,9 +125,9 @@
   </section>
 
   <!-- ===================== PULL QUOTE (painting) ===================== -->
-  <section style="position:relative; background:#3A4651; background-image:url('assets/blue-ridge.jpeg'); background-size:cover; background-position:center 38%; color:#EDE3CC;">
+  <section class="parallax" style="position:relative; background:#3A4651; background-image:url('assets/blue-ridge.jpeg'); background-size:cover; background-position:center 38%; color:#EDE3CC;">
     <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(40,50,60,0.66), rgba(40,50,60,0.5)); pointer-events:none;"></div>
-    <div style="position:relative; max-width:960px; margin:0 auto; padding:110px 40px; text-align:center;">
+    <div style="position:relative; max-width:960px; margin:0 auto; padding:110px 40px; text-align:center;" data-reveal-stagger>
       <img src="assets/shield-rf-cream.png" alt="RF shield monogram" style="height:74px; width:auto; margin-bottom:26px; filter:drop-shadow(0 2px 12px rgba(20,26,30,0.4));"/>
       <p style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(26px,3.4vw,40px); line-height:1.32; margin:0; color:#F7F2E6; text-wrap:balance; text-shadow:0 1px 22px rgba(20,26,30,0.45);">I write small stories centered on relationships, grounded in plot, and rooted in the holiness of ordinary days.</p>
       <div style="font-family:'EB Garamond',serif; font-style:italic; font-size:15px; color:rgba(237,227,204,0.75); margin-top:30px;">the Blue Ridge, looking west</div>
@@ -94,7 +136,7 @@
 
   <!-- ===================== THE NOVEL (teaser) ===================== -->
   <section id="novel" style="max-width:1200px; margin:0 auto; padding:96px 40px 0;">
-    <div style="max-width:680px; margin:0 auto; text-align:center;">
+    <div style="max-width:680px; margin:0 auto; text-align:center;" data-reveal-stagger>
       <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.34em; font-size:12px; color:#857438; margin-bottom:18px;">The Novel</div>
       <h2 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-style:italic; font-size:clamp(30px,4vw,44px); line-height:1.14; margin:0; color:#3A4651; text-wrap:balance;">The Flower Farm at the End of the World</h2>
       <p style="font-size:18.5px; line-height:1.7; color:#4a4432; margin:20px auto 0; max-width:560px;">A folktale quest about an eldest daughter who will cross a kingdom to save her sisters, their hidden farm, and the truth her father disappeared to hide.</p>
@@ -110,31 +152,31 @@
   <!-- ===================== FIND ME / DESTINATIONS ===================== -->
   <section id="find">
   <div class="band-inner" style="max-width:1200px; margin:0 auto; padding:96px 40px 40px;">
-    <div style="text-align:center; margin-bottom:56px;">
+    <div style="text-align:center; margin-bottom:56px;" data-reveal-stagger>
       <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.34em; font-size:12px; color:#857438; margin-bottom:16px;">Where to wander</div>
       <h2 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(30px,4vw,46px); line-height:1.1; margin:0; color:#3A4651;">Come along, whichever way you like.</h2>
     </div>
-    <div class="cards-grid" style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:28px;">
+    <div class="cards-grid" style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:28px;" data-reveal-stagger>
       <!-- Substack -->
       <a id="writing" class="card" href="https://rachelfletcher.substack.com/" target="_blank" rel="noopener" style="position:relative; display:flex; flex-direction:column; background:#F4EEE1; border:1px solid rgba(58,70,81,0.18); padding:40px 34px 34px;">
         <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#857438;">On Substack</div>
         <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:32px; color:#3A4651; margin:12px 0 14px; line-height:1.08;">Recent Writings</div>
         <p style="font-size:16.5px; line-height:1.66; color:#5A5142; margin:0 0 26px; flex:1;">Folkloric fiction and essays on faith, land, and the sacramental ordinary — delivered every other week.</p>
-        <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px; color:#6f5a2e;">Read on Substack &rarr;</span>
+        <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px; color:#6f5a2e;">Read on Substack <span class="arrow">&rarr;</span></span>
       </a>
       <!-- Recipes -->
       <a id="recipes" class="card" href="https://rachelfletcher.substack.com/archive" target="_blank" rel="noopener" style="position:relative; display:flex; flex-direction:column; background:#F4EEE1; border:1px solid rgba(58,70,81,0.18); padding:40px 34px 34px;">
         <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#857438;">From the kitchen</div>
         <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:32px; color:#3A4651; margin:12px 0 14px; line-height:1.08;">Recipes</div>
         <p style="font-size:16.5px; line-height:1.66; color:#5A5142; margin:0 0 26px; flex:1;">A catalogue of the seasonal, from-scratch recipes from the letters — the food that shows up in the stories.</p>
-        <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px; color:#6f5a2e;">Browse recipes &rarr;</span>
+        <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px; color:#6f5a2e;">Browse recipes <span class="arrow">&rarr;</span></span>
       </a>
       <!-- Pinterest -->
       <a class="card" href="https://www.pinterest.com/rachelfletcherwrites/" target="_blank" rel="noopener" style="position:relative; display:flex; flex-direction:column; background:#F4EEE1; border:1px solid rgba(58,70,81,0.18); padding:40px 34px 34px;">
         <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#857438;">On Pinterest</div>
         <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:32px; color:#3A4651; margin:12px 0 14px; line-height:1.08;">Field Notes</div>
         <p style="font-size:16.5px; line-height:1.66; color:#5A5142; margin:0 0 26px; flex:1;">The visual world behind the work — landscapes, still lifes, and the mood of the Blue Ridge.</p>
-        <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px; color:#6f5a2e;">Follow along &rarr;</span>
+        <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px; color:#6f5a2e;">Follow along <span class="arrow">&rarr;</span></span>
       </a>
     </div>
   </div>
@@ -144,10 +186,10 @@
   <section id="read" style="max-width:1200px; margin:0 auto; padding:96px 40px;">
     <div class="read-band" style="background:#F4EEE1; border:1px solid rgba(58,70,81,0.2); padding:72px 48px; text-align:center; position:relative;">
       <div style="position:absolute; inset:14px; border:1px solid rgba(58,70,81,0.14); pointer-events:none;"></div>
-      <div style="position:relative;">
+      <div style="position:relative;" data-reveal-stagger>
         <div style="font-family:'Monsieur La Doulaise',cursive; font-size:78px; color:#5A322F; line-height:0.9;">Read along</div>
         <p style="font-size:19px; line-height:1.7; color:#4a4432; max-width:540px; margin:18px auto 34px;">New letters every other week — essays, recipes, gardening, and handcrafts that speak to a slow, small life filled with meaning.</p>
-        <a class="btn btn-solid" href="https://rachelfletcher.substack.com/subscribe" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; background:#3A4651; color:#F4EEE1; font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:13px; padding:16px 34px;">Subscribe on Substack <span style="font-size:15px;">&rarr;</span></a>
+        <a class="btn btn-solid" href="https://rachelfletcher.substack.com/subscribe" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; background:#3A4651; color:#F4EEE1; font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:13px; padding:16px 34px;">Subscribe on Substack <span class="arrow" style="font-size:15px;">&rarr;</span></a>
       </div>
     </div>
   </section>
@@ -175,6 +217,59 @@
 <script>
   // Current year in the footer copyright line.
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Progressive-enhancement motion layer: sticky-nav state + staggered scroll reveal.
+  (function () {
+    var docEl = document.documentElement;
+    docEl.classList.add('js');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Nav gains a frosted bar once the page scrolls.
+    var header = document.querySelector('.site-header');
+    if (header) {
+      var onScroll = function () {
+        header.classList.toggle('scrolled', window.scrollY > 12);
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    var singles = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
+    var groups = Array.prototype.slice.call(document.querySelectorAll('[data-reveal-stagger]'));
+
+    // No IntersectionObserver / reduced motion → just show everything.
+    if (reduce || !('IntersectionObserver' in window)) {
+      singles.forEach(function (el) { el.classList.add('is-visible'); });
+      groups.forEach(function (g) {
+        Array.prototype.forEach.call(g.children, function (c) { c.classList.add('is-visible'); });
+      });
+      return;
+    }
+
+    var opts = { rootMargin: '0px 0px -8% 0px', threshold: 0.12 };
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-visible');
+        io.unobserve(e.target);
+      });
+    }, opts);
+    singles.forEach(function (el) { io.observe(el); });
+
+    // Groups reveal their children in sequence — stagger via setTimeout keeps
+    // hover transitions on the children (e.g. cards) snappy, unlike transition-delay.
+    var gio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        gio.unobserve(e.target);
+        Array.prototype.forEach.call(e.target.children, function (child, i) {
+          setTimeout(function () { child.classList.add('is-visible'); }, i * 90);
+        });
+      });
+    }, opts);
+    groups.forEach(function (g) { gio.observe(g); });
+  })();
 </script>
 </body>
 </html>
