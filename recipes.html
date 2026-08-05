@@ -20,6 +20,30 @@
 <meta property="og:image" content="https://rachelfletcherwrites.com/assets/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "The recipe shelf — Rachel Fletcher",
+  "description": "Seasonal, from-scratch recipes from Rachel Fletcher's letters, cooked in a Shenandoah Valley farmhouse kitchen.",
+  "url": "https://rachelfletcherwrites.com/recipes",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "3 Homemade Fruit Lemonade Syrups for the Hottest Week of Summer",
+      "url": "https://rachelfletcher.substack.com/p/3-homemade-fruit-lemonade-syrups"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Maple Balsamic Cabbage with Hot Honey Mustard Butter",
+      "url": "https://rachelfletcher.substack.com/p/maple-balsamic-cabbage-with-hot-honey"
+    }
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
@@ -108,56 +132,35 @@
   </section>
 
   <!-- ===================== RECIPE CARDS =====================
-       PLACEHOLDERS: swap each card's title, description, and href for real
-       letters as they publish. Keep one card per recipe; the season eyebrow
-       is the sort key. Cards link to the Substack post the recipe lives in.
+       One card per recipe letter, newest first; the season eyebrow is the
+       sort key. Cards link to the Substack post the recipe lives in.
   -->
   <section style="max-width:1200px; margin:0 auto; padding:0 40px 40px; width:100%; flex:1;">
     <div class="cards-grid" style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:28px;" data-reveal-stagger>
 
-      <a class="card" href="https://rachelfletcher.substack.com/archive" target="_blank" rel="noopener" style="display:flex; flex-direction:column; background:#F4EEE1; border:1px solid rgba(58,70,81,0.18); padding:36px 32px 30px;">
-        <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#857438;">Late summer</div>
-        <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:27px; color:#3A4651; margin:10px 0 12px; line-height:1.12;">Blackberry bramble jam</div>
-        <p style="font-size:16px; line-height:1.64; color:#5A5142; margin:0 0 22px; flex:1;">Wild-picked and low-sugar, put up the way the hedgerow intends.</p>
+      <a class="card" href="https://rachelfletcher.substack.com/p/3-homemade-fruit-lemonade-syrups" target="_blank" rel="noopener" style="display:flex; flex-direction:column; background:#F4EEE1; border:1px solid rgba(58,70,81,0.18); padding:36px 32px 30px;">
+        <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#857438;">High summer</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:27px; color:#3A4651; margin:10px 0 12px; line-height:1.12;">Three fruit lemonade syrups</div>
+        <p style="font-size:16px; line-height:1.64; color:#5A5142; margin:0 0 22px; flex:1;">Peach &amp; brown sugar, strawberry-mint, blueberry-basil — one simple ratio for the hottest week of summer.</p>
         <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12px; color:#6f5a2e;">Read the letter <span class="arrow">&rarr;</span></span>
       </a>
 
-      <a class="card" href="https://rachelfletcher.substack.com/archive" target="_blank" rel="noopener" style="display:flex; flex-direction:column; background:#F4EEE1; border:1px solid rgba(58,70,81,0.18); padding:36px 32px 30px;">
-        <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#857438;">Autumn</div>
-        <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:27px; color:#3A4651; margin:10px 0 12px; line-height:1.12;">Apple stack cake</div>
-        <p style="font-size:16px; line-height:1.64; color:#5A5142; margin:0 0 22px; flex:1;">The Appalachian wedding cake — thin layers, dried apples, and patience.</p>
-        <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12px; color:#6f5a2e;">Read the letter <span class="arrow">&rarr;</span></span>
-      </a>
-
-      <a class="card" href="https://rachelfletcher.substack.com/archive" target="_blank" rel="noopener" style="display:flex; flex-direction:column; background:#F4EEE1; border:1px solid rgba(58,70,81,0.18); padding:36px 32px 30px;">
-        <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#857438;">Winter</div>
-        <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:27px; color:#3A4651; margin:10px 0 12px; line-height:1.12;">Bone-warming potato soup</div>
-        <p style="font-size:16px; line-height:1.64; color:#5A5142; margin:0 0 22px; flex:1;">Four ingredients and a heavy pot, for the short gray days.</p>
-        <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12px; color:#6f5a2e;">Read the letter <span class="arrow">&rarr;</span></span>
-      </a>
-
-      <a class="card" href="https://rachelfletcher.substack.com/archive" target="_blank" rel="noopener" style="display:flex; flex-direction:column; background:#F4EEE1; border:1px solid rgba(58,70,81,0.18); padding:36px 32px 30px;">
-        <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#857438;">Spring</div>
-        <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:27px; color:#3A4651; margin:10px 0 12px; line-height:1.12;">Violet &amp; honey shortbread</div>
-        <p style="font-size:16px; line-height:1.64; color:#5A5142; margin:0 0 22px; flex:1;">What the first week of real spring tastes like.</p>
-        <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12px; color:#6f5a2e;">Read the letter <span class="arrow">&rarr;</span></span>
-      </a>
-
-      <a class="card" href="https://rachelfletcher.substack.com/archive" target="_blank" rel="noopener" style="display:flex; flex-direction:column; background:#F4EEE1; border:1px solid rgba(58,70,81,0.18); padding:36px 32px 30px;">
-        <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#857438;">Any season</div>
-        <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:27px; color:#3A4651; margin:10px 0 12px; line-height:1.12;">Farmhouse sourdough</div>
-        <p style="font-size:16px; line-height:1.64; color:#5A5142; margin:0 0 22px; flex:1;">A slow loaf for a slow life — the starter has a name, of course.</p>
+      <a class="card" href="https://rachelfletcher.substack.com/p/maple-balsamic-cabbage-with-hot-honey" target="_blank" rel="noopener" style="display:flex; flex-direction:column; background:#F4EEE1; border:1px solid rgba(58,70,81,0.18); padding:36px 32px 30px;">
+        <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#857438;">Early spring</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:27px; color:#3A4651; margin:10px 0 12px; line-height:1.12;">Maple balsamic cabbage</div>
+        <p style="font-size:16px; line-height:1.64; color:#5A5142; margin:0 0 22px; flex:1;">With hot honey mustard butter — a St. Patrick's cabbage that doesn't taste boiled.</p>
         <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12px; color:#6f5a2e;">Read the letter <span class="arrow">&rarr;</span></span>
       </a>
 
       <a class="card" href="https://rachelfletcher.substack.com/archive" target="_blank" rel="noopener" style="display:flex; flex-direction:column; background:#3A4651; border:1px solid rgba(58,70,81,0.3); padding:36px 32px 30px;">
         <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#CDBFA4;">The whole shelf</div>
         <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:27px; color:#F4EEE1; margin:10px 0 12px; line-height:1.12;">Browse every letter</div>
-        <p style="font-size:16px; line-height:1.64; color:#CDBFA4; margin:0 0 22px; flex:1;">The full archive lives on Substack — recipes, essays, gardening, and handcrafts.</p>
+        <p style="font-size:16px; line-height:1.64; color:#CDBFA4; margin:0 0 22px; flex:1;">The full archive lives on Substack — recipes, essays, the farmhouse, and handcrafts.</p>
         <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12px; color:#EDE3CC;">To the archive <span class="arrow">&rarr;</span></span>
       </a>
 
     </div>
+    <p style="text-align:center; font-family:'EB Garamond',serif; font-style:italic; font-size:16px; color:#7d7156; margin:34px auto 0; max-width:520px;" data-reveal>The shelf is young — every recipe that goes out in a letter earns its card here.</p>
   </section>
 
   <!-- ===================== SUBSCRIBE BAND ===================== -->
@@ -166,7 +169,7 @@
       <div style="position:absolute; inset:14px; border:1px solid rgba(58,70,81,0.14); pointer-events:none;"></div>
       <div style="position:relative;" data-reveal>
         <div style="font-family:'Monsieur La Doulaise',cursive; font-size:60px; color:#5A322F; line-height:0.9;">From my kitchen to yours</div>
-        <p style="font-size:18px; line-height:1.7; color:#4a4432; max-width:520px; margin:16px auto 28px;">New recipes arrive inside the letters, every other week. No noise; just the good, slow stuff.</p>
+        <p style="font-size:18px; line-height:1.7; color:#4a4432; max-width:520px; margin:16px auto 28px;">New recipes arrive folded inside the letters, season by season. No noise; just the good, slow stuff.</p>
         <a class="btn btn-solid" href="https://rachelfletcher.substack.com/subscribe" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; background:#3A4651; color:#F4EEE1; font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:13px; padding:15px 30px;">Read along <span class="arrow" style="font-size:15px;">&rarr;</span></a>
       </div>
     </div>

@@ -1,9 +1,15 @@
 {
-  // Static-assets Worker: no server code, just serve the files in this repo.
+  // Static-assets Worker: serve the files in this repo, plus one tiny script
+  // (worker.js) that answers the Google Search Console verification path with
+  // a 200 — the assets router would otherwise 307 "*.html" to the extensionless
+  // URL, and Google's verifier does not follow redirects.
   // Cloudflare's "Workers Builds" pipeline runs `npx wrangler deploy`, which reads this.
   "name": "rachelwrites",
   "compatibility_date": "2025-01-01",
+  "main": "worker.js",
   "assets": {
-    "directory": "./"
+    "directory": "./",
+    "binding": "ASSETS",
+    "run_worker_first": ["/googled7fff89c63962e50.html"]
   }
 }

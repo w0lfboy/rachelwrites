@@ -12,8 +12,9 @@ that must NOT be publicly served (config, README, `design-system/`).
 ## Structure
 
 - `index.html` — landing page (hero, Blue Ridge quote band, novel teaser, destination cards, read-along band)
-- `recipes.html` — recipe shelf; cards are PLACEHOLDERS (see comment in file) — swap titles/links for real Substack letters as they publish
+- `recipes.html` — recipe shelf; one card per real recipe letter (newest first) + archive card. Add a card each time a recipe letter publishes; also add it to the ItemList JSON-LD in the head.
 - `about.html` — bio (DRAFT copy — Rachel should personalize), quote band, trio tiles
+- `worker.js` — serves the GSC verification path with a 200 (assets routing 307s `*.html`, which Google's verifier rejects); all other requests fall through to assets
 - `assets/` — WebP images (page use) + PNG/JPEG originals, OG image, favicons
 - `design-system/` — component library + `Design System.dc.html` (Claude Design format). Reference only; not served.
 - `sitemap.xml`, `robots.txt`, `googled*.html` (Search Console verification)
@@ -35,12 +36,12 @@ that must NOT be publicly served (config, README, `design-system/`).
 
 ## Links wired
 
-- Substack: https://rachelfletcher.substack.com/ (subscribe: /subscribe, archive: /archive)
+- Substack: https://rachelfletcher.substack.com/ — publication name **Fletchling Thoughts**, tagline "Learning to be a meaning maker in a world of already but not yet." (subscribe: /subscribe, archive: /archive)
 - Pinterest: https://www.pinterest.com/rachelfletcherwrites/ (domain claimed via meta tag on index)
 
 ## Near-term TODO
 
-- [ ] Replace recipe placeholder cards with real letter titles + URLs
+- [x] Replace recipe placeholder cards with real letter titles + URLs (lemonade syrups, maple balsamic cabbage — Aug 2026)
 - [ ] Rachel personalizes the About bio draft
 - [ ] Swap About sparrow plate for a portrait photo when available
 - [ ] Novella page + capture form when the novella (reader magnet) nears completion
