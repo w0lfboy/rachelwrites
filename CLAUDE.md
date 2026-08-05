@@ -17,7 +17,7 @@ that must NOT be publicly served (config, README, `design-system/`).
 - `worker.js` — serves the GSC verification path with a 200 (assets routing 307s `*.html`, which Google's verifier rejects); all other requests fall through to assets
 - `404.html` — branded not-found page (`not_found_handling: "404-page"` in wrangler.jsonc); noindex
 - www → apex 301 lives in `worker.js` (the `_redirects` file cannot do domain-level rules on Workers)
-- `_headers` — security headers site-wide + 1-week browser cache on `/assets/*`
+- security headers site-wide + 1-week browser cache on `/assets/*` — set in `worker.js` (a `_headers` file is ignored for Worker-generated responses)
 - `llms.txt` — short site summary for AI-search crawlers
 - `assets/` — WebP images (page use) + PNG/JPEG originals, OG image, favicons
 - `design-system/` — component library + `Design System.dc.html` (Claude Design format). Reference only; not served.
