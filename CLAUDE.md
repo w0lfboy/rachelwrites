@@ -16,7 +16,7 @@ that must NOT be publicly served (config, README, `design-system/`).
 - `about.html` — bio (DRAFT copy — Rachel should personalize), quote band, trio tiles
 - `worker.js` — serves the GSC verification path with a 200 (assets routing 307s `*.html`, which Google's verifier rejects); all other requests fall through to assets
 - `404.html` — branded not-found page (`not_found_handling: "404-page"` in wrangler.jsonc); noindex
-- `_redirects` — 301s www → apex (avoid duplicate-content indexing)
+- www → apex 301 lives in `worker.js` (the `_redirects` file cannot do domain-level rules on Workers)
 - `_headers` — security headers site-wide + 1-week browser cache on `/assets/*`
 - `llms.txt` — short site summary for AI-search crawlers
 - `assets/` — WebP images (page use) + PNG/JPEG originals, OG image, favicons
