@@ -1,0 +1,50 @@
+# rachelwrites — Rachel Fletcher's author site
+
+Static site for **rachelfletcherwrites.com**. No build step, no framework — plain
+HTML/CSS/JS served as Cloudflare Workers static assets.
+
+## Deploy
+
+Push to `main` → Cloudflare Workers Builds auto-deploys (`npx wrangler deploy`,
+config in `wrangler.jsonc`). Nothing else to do. `.assetsignore` lists repo files
+that must NOT be publicly served (config, README, `design-system/`).
+
+## Structure
+
+- `index.html` — landing page (hero, Blue Ridge quote band, novel teaser, destination cards, read-along band)
+- `recipes.html` — recipe shelf; cards are PLACEHOLDERS (see comment in file) — swap titles/links for real Substack letters as they publish
+- `about.html` — bio (DRAFT copy — Rachel should personalize), quote band, trio tiles
+- `assets/` — WebP images (page use) + PNG/JPEG originals, OG image, favicons
+- `design-system/` — component library + `Design System.dc.html` (Claude Design format). Reference only; not served.
+- `sitemap.xml`, `robots.txt`, `googled*.html` (Search Console verification)
+
+## Conventions
+
+- Design language: Bluestone Slate `#3A4651`, Farmhouse Bone `#EAE1CE`, Paper `#F4EEE1`,
+  Olive Gold `#857438` accent, Fig Plum `#5A322F` script/hover. Fonts: Cormorant Garamond
+  (display), EB Garamond (body/UI), Monsieur La Doulaise (script flourish only).
+  Full tokens: `design-system/tokens/tokens.css`.
+- One shared easing `cubic-bezier(.22,.61,.36,1)`; scroll-reveal via IntersectionObserver;
+  everything honors `prefers-reduced-motion`.
+- Styling is inline-styles + one `<style>` block per page (inherited from the Claude Design
+  prototype). Head/nav/footer are duplicated per page — keep them in sync when editing.
+- Each page carries canonical URL, OG/Twitter tags, and JSON-LD (Person/WebSite/Book on
+  index; ProfilePage on about). Update the Book node with ISBN/retail links at launch.
+- SEO principle: the site's job is owning searches for "Rachel Fletcher" and the book
+  title. Essays/letters stay canonical on Substack; this site hosts index/landing pages.
+
+## Links wired
+
+- Substack: https://rachelfletcher.substack.com/ (subscribe: /subscribe, archive: /archive)
+- Pinterest: https://www.pinterest.com/rachelfletcherwrites/ (domain claimed via meta tag on index)
+
+## Near-term TODO
+
+- [ ] Replace recipe placeholder cards with real letter titles + URLs
+- [ ] Rachel personalizes the About bio draft
+- [ ] Swap About sparrow plate for a portrait photo when available
+- [ ] Novella page + capture form when the novella (reader magnet) nears completion
+- [ ] Book/preorder page for *The Flower Farm at the End of the World* (upgrade the teaser)
+- [ ] Import `design-system/Design System.dc.html` into the Claude Design project
+
+Private planning notes live in `PRIVATE-NOTES.md` (gitignored — do not commit).
