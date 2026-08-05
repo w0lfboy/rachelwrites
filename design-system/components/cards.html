@@ -1,0 +1,72 @@
+<!-- @dsCard group="Components" name="Cards" subtitle="Paper, recipe, inverse slate, static tile" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cards — Rachel Fletcher DS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background:#EAE1CE; font-family:'EB Garamond', Georgia, serif; color:#33301F; padding:32px; }
+  ::selection { background:#857438; color:#F4EEE1; }
+  a { color:#6f5a2e; text-decoration:none; }
+  a:hover { color:#3A4651; }
+  :root { --ease: cubic-bezier(.22,.61,.36,1);
+    --slate:#3A4651; --bone:#EAE1CE; --paper:#F4EEE1; --olive:#857438; --plum:#5A322F;
+    --sage:#6B7248; --figleaf:#454E2C; --blossom:#B58C7B; --branch:#7A5E40; --ink:#33301F; }
+  .navlink { position:relative; }
+  .navlink::after { content:""; position:absolute; left:0; bottom:-4px; height:1px; width:0; background:#857438; transition:width .28s var(--ease); }
+  .navlink:hover::after { width:100%; }
+  .btn { transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease); }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-solid:hover { background:#5A322F !important; color:#F4EEE1 !important; box-shadow:0 16px 30px -18px rgba(90,50,47,.55); }
+  .btn-ghost:hover { background:#3A4651 !important; color:#F4EEE1 !important; }
+  .arrow { display:inline-block; transition: transform .3s var(--ease); }
+  .btn:hover .arrow, .card:hover .cardcta .arrow { transform: translateX(4px); }
+  .card { transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 26px 46px -28px rgba(20,26,30,0.42); }
+  .card:hover .cardcta { color:#3A4651; }
+  .cardcta { transition: color .25s var(--ease); }
+  .plate { transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
+  .plate:hover { transform: translateY(-5px); box-shadow: 0 52px 92px -44px rgba(20,26,30,0.6); }
+  .speclabel { font-family:'EB Garamond',serif; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:#7d7156; margin:26px 0 12px; }
+  .speclabel:first-child { margin-top:0; }
+</style>
+
+</head>
+<body>
+<div style="max-width:1080px; margin:0 auto;">
+  <div class="speclabel">Destination / recipe cards on paper; inverse slate card closes a grid</div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:24px;">
+    <a class="card" href="#" style="display:flex; flex-direction:column; background:#F4EEE1; border:1px solid rgba(58,70,81,0.18); padding:36px 32px 30px;">
+      <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#857438;">On Substack</div>
+      <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:28px; color:#3A4651; margin:10px 0 12px; line-height:1.1;">Recent Writings</div>
+      <p style="font-size:16px; line-height:1.64; color:#5A5142; margin:0 0 22px; flex:1;">Folkloric fiction and essays on faith, land, and the sacramental ordinary.</p>
+      <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12px; color:#6f5a2e;">Read on Substack <span class="arrow">&rarr;</span></span>
+    </a>
+    <a class="card" href="#" style="display:flex; flex-direction:column; background:#F4EEE1; border:1px solid rgba(58,70,81,0.18); padding:36px 32px 30px;">
+      <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#857438;">Late summer</div>
+      <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:28px; color:#3A4651; margin:10px 0 12px; line-height:1.1;">Blackberry bramble jam</div>
+      <p style="font-size:16px; line-height:1.64; color:#5A5142; margin:0 0 22px; flex:1;">Wild-picked and low-sugar, put up the way the hedgerow intends.</p>
+      <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12px; color:#6f5a2e;">Read the letter <span class="arrow">&rarr;</span></span>
+    </a>
+    <a class="card" href="#" style="display:flex; flex-direction:column; background:#3A4651; border:1px solid rgba(58,70,81,0.3); padding:36px 32px 30px;">
+      <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#CDBFA4;">The whole shelf</div>
+      <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:28px; color:#F4EEE1; margin:10px 0 12px; line-height:1.1;">Browse every letter</div>
+      <p style="font-size:16px; line-height:1.64; color:#CDBFA4; margin:0 0 22px; flex:1;">The full archive lives on Substack — recipes, essays, and more.</p>
+      <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12px; color:#EDE3CC;">To the archive <span class="arrow">&rarr;</span></span>
+    </a>
+  </div>
+  <div class="speclabel">Static info tile (no hover travel) — About page trio</div>
+  <div style="background:#F4EEE1; border:1px solid rgba(58,70,81,0.18); padding:36px 32px; max-width:340px;">
+    <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.24em; font-size:11px; color:#857438;">The letters</div>
+    <div style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:26px; color:#3A4651; margin:10px 0 12px; line-height:1.12;">Every other week</div>
+    <p style="font-size:16px; line-height:1.66; color:#5A5142; margin:0;">Essays, recipes, gardening, and handcrafts. No noise; just the good, slow stuff.</p>
+  </div>
+</div>
+</body>
+</html>

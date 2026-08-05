@@ -1,0 +1,38 @@
+/* Rachel Fletcher — design tokens (extracted from rachelfletcherwrites.com) */
+:root {
+  /* color */
+  --rf-slate: #3A4651;      /* Bluestone Slate — primary */
+  --rf-bone: #EAE1CE;       /* Farmhouse Bone — page ground */
+  --rf-paper: #F4EEE1;      /* Paper — cards, plates, panels */
+  --rf-olive: #857438;      /* Olive Gold — accent */
+  --rf-plum: #5A322F;       /* Fig Plum — script, hover */
+  --rf-sage: #6B7248;
+  --rf-fig-leaf: #454E2C;
+  --rf-blossom: #B58C7B;
+  --rf-branch: #7A5E40;
+  --rf-ink: #33301F;        /* body text */
+  --rf-ink-soft: #4a4432;
+  --rf-ink-muted: #7d7156;
+  --rf-cream-on-slate: #CDBFA4;
+  --rf-hairline: rgba(58,70,81,0.18);
+  --rf-hairline-soft: rgba(58,70,81,0.14);
+
+  /* type */
+  --rf-font-display: 'Cormorant Garamond', serif;   /* 500; display + headings + wordmark */
+  --rf-font-body: 'EB Garamond', Georgia, serif;     /* body, eyebrows, UI */
+  --rf-font-script: 'Monsieur La Doulaise', cursive; /* flourish only */
+  --rf-track-eyebrow: 0.34em;  /* up to 0.4em on hero */
+  --rf-track-ui: 0.2em;
+  --rf-track-wordmark: 0.26em;
+
+  /* motion */
+  --rf-ease: cubic-bezier(.22,.61,.36,1);
+  --rf-reveal-duration: .8s;
+  --rf-reveal-rise: 18px;
+  --rf-stagger: 90ms;
+
+  /* layout */
+  --rf-max-width: 1200px;
+  --rf-gutter: 40px;         /* 22px under 560px */
+  --rf-section-pad: 96px;
+}

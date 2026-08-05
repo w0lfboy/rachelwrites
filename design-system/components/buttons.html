@@ -1,0 +1,53 @@
+<!-- @dsCard group="Components" name="Buttons & links" subtitle="Solid / ghost / nav underline / card CTA" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buttons — Rachel Fletcher DS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background:#EAE1CE; font-family:'EB Garamond', Georgia, serif; color:#33301F; padding:32px; }
+  ::selection { background:#857438; color:#F4EEE1; }
+  a { color:#6f5a2e; text-decoration:none; }
+  a:hover { color:#3A4651; }
+  :root { --ease: cubic-bezier(.22,.61,.36,1);
+    --slate:#3A4651; --bone:#EAE1CE; --paper:#F4EEE1; --olive:#857438; --plum:#5A322F;
+    --sage:#6B7248; --figleaf:#454E2C; --blossom:#B58C7B; --branch:#7A5E40; --ink:#33301F; }
+  .navlink { position:relative; }
+  .navlink::after { content:""; position:absolute; left:0; bottom:-4px; height:1px; width:0; background:#857438; transition:width .28s var(--ease); }
+  .navlink:hover::after { width:100%; }
+  .btn { transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease); }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-solid:hover { background:#5A322F !important; color:#F4EEE1 !important; box-shadow:0 16px 30px -18px rgba(90,50,47,.55); }
+  .btn-ghost:hover { background:#3A4651 !important; color:#F4EEE1 !important; }
+  .arrow { display:inline-block; transition: transform .3s var(--ease); }
+  .btn:hover .arrow, .card:hover .cardcta .arrow { transform: translateX(4px); }
+  .card { transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 26px 46px -28px rgba(20,26,30,0.42); }
+  .card:hover .cardcta { color:#3A4651; }
+  .cardcta { transition: color .25s var(--ease); }
+  .plate { transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
+  .plate:hover { transform: translateY(-5px); box-shadow: 0 52px 92px -44px rgba(20,26,30,0.6); }
+  .speclabel { font-family:'EB Garamond',serif; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:#7d7156; margin:26px 0 12px; }
+  .speclabel:first-child { margin-top:0; }
+</style>
+
+</head>
+<body>
+<div style="max-width:760px; margin:0 auto;">
+  <div class="speclabel">Solid — primary CTA (hover: fig plum)</div>
+  <a class="btn btn-solid" href="#" style="display:inline-flex; align-items:center; gap:10px; background:#3A4651; color:#F4EEE1; font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:13px; padding:16px 30px;">Read along <span class="arrow" style="font-size:15px;">&rarr;</span></a>
+  <div class="speclabel">Ghost — secondary (hover: fills slate)</div>
+  <a class="btn btn-ghost" href="#" style="display:inline-flex; border:1px solid #3A4651; color:#3A4651; font-family:'EB Garamond',serif; text-transform:uppercase; padding:9px 20px; letter-spacing:0.2em; font-size:12.5px;">Read Along</a>
+  <div class="speclabel">Nav link — underline grows from left</div>
+  <a class="navlink" href="#" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px; color:#4a4432;">Writing</a>
+  <div class="speclabel">Card CTA — tracked caps with gliding arrow</div>
+  <span class="cardcta" style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px; color:#6f5a2e;">Read on Substack <span class="arrow">&rarr;</span></span>
+</div>
+</body>
+</html>

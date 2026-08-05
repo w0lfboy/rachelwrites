@@ -1,0 +1,56 @@
+<!-- @dsCard group="Components" name="Plate frame" subtitle="Tipped-in print treatment for artwork" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plate — Rachel Fletcher DS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background:#EAE1CE; font-family:'EB Garamond', Georgia, serif; color:#33301F; padding:32px; }
+  ::selection { background:#857438; color:#F4EEE1; }
+  a { color:#6f5a2e; text-decoration:none; }
+  a:hover { color:#3A4651; }
+  :root { --ease: cubic-bezier(.22,.61,.36,1);
+    --slate:#3A4651; --bone:#EAE1CE; --paper:#F4EEE1; --olive:#857438; --plum:#5A322F;
+    --sage:#6B7248; --figleaf:#454E2C; --blossom:#B58C7B; --branch:#7A5E40; --ink:#33301F; }
+  .navlink { position:relative; }
+  .navlink::after { content:""; position:absolute; left:0; bottom:-4px; height:1px; width:0; background:#857438; transition:width .28s var(--ease); }
+  .navlink:hover::after { width:100%; }
+  .btn { transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease); }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-solid:hover { background:#5A322F !important; color:#F4EEE1 !important; box-shadow:0 16px 30px -18px rgba(90,50,47,.55); }
+  .btn-ghost:hover { background:#3A4651 !important; color:#F4EEE1 !important; }
+  .arrow { display:inline-block; transition: transform .3s var(--ease); }
+  .btn:hover .arrow, .card:hover .cardcta .arrow { transform: translateX(4px); }
+  .card { transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 26px 46px -28px rgba(20,26,30,0.42); }
+  .card:hover .cardcta { color:#3A4651; }
+  .cardcta { transition: color .25s var(--ease); }
+  .plate { transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
+  .plate:hover { transform: translateY(-5px); box-shadow: 0 52px 92px -44px rgba(20,26,30,0.6); }
+  .speclabel { font-family:'EB Garamond',serif; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:#7d7156; margin:26px 0 12px; }
+  .speclabel:first-child { margin-top:0; }
+</style>
+
+</head>
+<body>
+<div style="max-width:760px; margin:0 auto; display:flex; gap:48px; flex-wrap:wrap; align-items:flex-start;">
+  <div>
+    <div class="speclabel">The plate — artwork mounted like a tipped-in print</div>
+    <div class="plate" style="position:relative; padding:22px; background:#F4EEE1; border:1px solid rgba(58,70,81,0.22); box-shadow:0 40px 80px -40px rgba(20,26,30,0.5); width:300px;">
+      <div style="position:absolute; inset:10px; border:1px solid rgba(58,70,81,0.16); pointer-events:none;"></div>
+      <img src="../assets/sparrow-mark-trim.webp" alt="Sparrow mark" style="display:block; width:100%; height:auto;"/>
+    </div>
+  </div>
+  <div style="max-width:280px;">
+    <div class="speclabel">Anatomy</div>
+    <p style="font-size:15.5px; line-height:1.7; color:#5A5142; margin:0;">Paper ground, 22px mat, hairline outer border, inset hairline at 10px, long soft drop shadow. Hover lifts 5px. Used for the sparrow on the hero and the About portrait.</p>
+  </div>
+</div>
+</body>
+</html>
