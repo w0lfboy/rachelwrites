@@ -12,9 +12,9 @@ that must NOT be publicly served (config, README, `design-system/`).
 ## Structure
 
 - `index.html` — landing page (hero, Blue Ridge quote band, novel teaser, destination cards, read-along band)
-- `recipes.html` — recipe shelf; one card per real recipe letter (newest first) + archive card. Add a card each time a recipe letter publishes; also add it to the ItemList JSON-LD in the head.
+- `recipes.html` — recipe shelf; one card per real recipe letter (newest first) + archive card. Add a card each time a recipe letter publishes; also add it to the ItemList JSON-LD in the head. Below the shelf, a "Fresh from the letters" strip auto-renders the 3 newest Substack posts from `/api/letters` (client-side; hidden if the API fails).
 - `about.html` — bio (DRAFT copy — Rachel should personalize), quote band, trio tiles
-- `worker.js` — serves the GSC verification path with a 200 (assets routing 307s `*.html`, which Google's verifier rejects); all other requests fall through to assets
+- `worker.js` — serves the GSC verification path with a 200 (assets routing 307s `*.html`, which Google's verifier rejects); `/api/letters` proxies the Substack RSS feed (30-min edge cache) for the "Fresh from the letters" strip on /recipes; all other requests fall through to assets
 - `404.html` — branded not-found page (`not_found_handling: "404-page"` in wrangler.jsonc); noindex
 - www → apex 301 lives in `worker.js` (the `_redirects` file cannot do domain-level rules on Workers)
 - security headers site-wide + 1-week browser cache on `/assets/*` — set in `worker.js` (a `_headers` file is ignored for Worker-generated responses)
