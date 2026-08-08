@@ -56,19 +56,25 @@ async function latestLetters(ctx) {
   if (hit) return hit;
 
   let items = [];
+  let meta = {};
   try {
+    // Substack bot-blocks plain/custom UAs from datacenter IPs; browser-like
+    // headers get the feed through.
     const res = await fetch(FEED_URL, {
       headers: {
-        "User-Agent": "rachelfletcherwrites.com site (Cloudflare Worker)",
-        "Accept": "application/rss+xml, application/xml, text/xml",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36",
+        "Accept": "application/rss+xml, application/xml, text/xml, */*",
+        "Accept-Language": "en-US,en;q=0.9",
       },
     });
+    meta.status = res.status;
     if (res.ok) items = parseFeed(await res.text());
   } catch (e) {
     // fall through with empty items; the short cache below limits retry pressure
+    meta.error = String(e && e.message || e);
   }
 
-  const out = new Response(JSON.stringify({ items }), {
+  const out = new Response(JSON.stringify({ items, meta }), {
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": `public, s-maxage=${items.length ? FEED_TTL : 60}, max-age=300`,
