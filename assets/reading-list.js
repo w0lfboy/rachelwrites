@@ -10,6 +10,15 @@
   var SUBSTACK = 'https://rachelfletcher.substack.com/subscribe?email=';
   var DOWNLOAD_FALLBACK = 'https://drive.google.com/uc?export=download&id=1ajmWr9mFpPf7vewSfTkmAuKAWlrlMUCp';
 
+  // ?src=pin-main etc. on the landing URL → remembered for the session so the
+  // signup (even from the pop-up on another page) is attributed to the pin.
+  function srcTag() {
+    try {
+      var m = location.search.match(/[?&]src=([^&#]{1,40})/);
+      if (m) { sessionStorage.setItem('rl_src', decodeURIComponent(m[1])); return decodeURIComponent(m[1]); }
+      return sessionStorage.getItem('rl_src');
+    } catch (e) { return null; }
+  }
   function store(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
 
@@ -46,7 +55,7 @@
       fetch('/api/reading-list', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.value.trim(), website: hp ? hp.value : '', source: form.getAttribute('data-source') || 'site', page: location.pathname })
+        body: JSON.stringify({ email: email.value.trim(), website: hp ? hp.value : '', source: srcTag() || form.getAttribute('data-source') || 'site', page: location.pathname })
       }).then(function (r) { return r.json().then(function (d) { d.__status = r.status; return d; }); })
         .then(function (d) {
           if (d.ok) {
