@@ -162,6 +162,7 @@
       <nav style="display:flex; align-items:center; gap:34px; font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px; color:#4a4432;">
         <a class="navlink" href="#writing" style="color:#4a4432;">Writing</a>
         <a class="navlink" href="/recipes" style="color:#4a4432;">Recipes</a>
+        <a class="navlink" href="/reading-list" style="color:#4a4432;">Reading List</a>
         <a class="navlink" href="/about" style="color:#4a4432;">About</a>
         <a class="btn btn-ghost navlink" href="https://rachelfletcher.substack.com/" target="_blank" rel="noopener" style="border:1px solid #3A4651; color:#3A4651; padding:9px 20px; letter-spacing:0.2em;">Read Along</a>
       </nav>
@@ -247,6 +248,30 @@
   </div>
   </section>
 
+
+  <!-- ===================== FREE READING LIST (lead magnet) ===================== -->
+  <section id="reading-list" style="max-width:1200px; margin:0 auto; padding:24px 40px 0; width:100%;">
+    <div style="background:#F4EEE1; border:1px solid rgba(58,70,81,0.2); padding:44px 44px; position:relative;">
+      <div style="position:absolute; inset:12px; border:1px solid rgba(58,70,81,0.14); pointer-events:none;"></div>
+      <div class="rl-band-grid" style="position:relative;" data-reveal>
+        <a href="/reading-list" style="display:block; max-width:200px; margin:0 auto;"><img src="assets/reading-list-cover-sm.webp" alt="Twelve Books to Read with Your Middle Schooler — free reading list" width="510" height="660" loading="lazy" style="display:block; width:100%; height:auto; box-shadow:0 24px 44px -26px rgba(20,26,30,0.6); border:1px solid rgba(58,70,81,0.18);"></a>
+        <div>
+          <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.34em; font-size:12px; color:#857438; margin-bottom:12px;">A free reading list</div>
+          <h2 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(26px,3.4vw,38px); line-height:1.1; margin:0; color:#3A4651;">12 Books to Read With Your Middle Schooler</h2>
+          <p style="font-size:17px; line-height:1.68; color:#4a4432; margin:12px 0 22px; max-width:520px;">A printable list with summaries, why each book matters, and read-along notes — so you can stay weird and wonderful together. <a href="/reading-list">See what's inside &rarr;</a></p>
+          <form class="rl-form" action="/api/reading-list" method="post" data-source="inline" style="position:relative; max-width:520px;">
+            <label for="rl-email-inline" style="position:absolute; left:-9999px;">Email address</label>
+            <input id="rl-email-inline" type="email" name="email" placeholder="your@email.com" required autocomplete="email" inputmode="email">
+            <input class="rl-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <button class="btn btn-solid" type="submit">Send me the list <span class="arrow">&rarr;</span></button>
+            <div class="rl-msg" role="status" aria-live="polite" style="flex-basis:100%;"></div>
+          </form>
+          <p style="font-size:14px; line-height:1.5; color:#7d7156; font-style:italic; margin:10px 0 0;">You'll also get Fletchling Thoughts, every other week. Unsubscribe anytime.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===================== READ ALONG (band) ===================== -->
   <section id="read" style="max-width:1200px; margin:0 auto; padding:96px 40px;">
     <div class="read-band" style="background:#F4EEE1; border:1px solid rgba(58,70,81,0.2); padding:72px 48px; text-align:center; position:relative;">
@@ -269,6 +294,7 @@
       <div style="display:flex; gap:28px; font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px;">
         <a class="navlink" href="https://rachelfletcher.substack.com/" target="_blank" rel="noopener" style="color:#CDBFA4;">Substack</a>
         <a class="navlink" href="/recipes" style="color:#CDBFA4;">Recipes</a>
+        <a class="navlink" href="/reading-list" style="color:#CDBFA4;">Reading List</a>
         <a class="navlink" href="/about" style="color:#CDBFA4;">About</a>
         <a class="navlink" href="https://www.pinterest.com/rachelfletcherwrites/" target="_blank" rel="noopener" style="color:#CDBFA4;">Pinterest</a>
       </div>
@@ -337,5 +363,6 @@
     groups.forEach(function (g) { gio.observe(g); });
   })();
 </script>
+<script src="assets/reading-list.js?v=2" defer></script>
 </body>
 </html>

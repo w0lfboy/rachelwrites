@@ -7,6 +7,14 @@
   "name": "rachelwrites",
   "compatibility_date": "2025-01-01",
   "main": "worker.js",
+  // Non-secret config for the reading-list funnel. The Resend API key is a
+  // secret: set it in the dashboard (Workers → rachelwrites → Settings →
+  // Variables and Secrets → RESEND_API_KEY) or `npx wrangler secret put RESEND_API_KEY`.
+  "vars": {
+    "READING_LIST_DOWNLOAD_URL": "https://drive.google.com/uc?export=download&id=1ajmWr9mFpPf7vewSfTkmAuKAWlrlMUCp",
+    "READING_LIST_SEGMENT_ID": "d1b8c9eb-4a47-433f-8667-211e7b53c939",
+    "MAIL_FROM": "Rachel Fletcher <hello@rachelfletcherwrites.com>"
+  },
   "assets": {
     "directory": "./",
     "binding": "ASSETS",

@@ -14,7 +14,9 @@ that must NOT be publicly served (config, README, `design-system/`).
 - `index.html` — landing page (hero, Blue Ridge quote band, novel teaser, destination cards, read-along band)
 - `recipes.html` — recipe shelf; one card per real recipe letter (newest first) + archive card. Add a card each time a recipe letter publishes; also add it to the ItemList JSON-LD in the head. Below the shelf, a "Fresh from the letters" strip auto-renders the 3 newest Substack posts from `/api/letters` (client-side; hidden if the API fails).
 - `about.html` — bio (DRAFT copy — Rachel should personalize), quote band, trio tiles
-- `worker.js` — serves the GSC verification path with a 200 (assets routing 307s `*.html`, which Google's verifier rejects); `/api/letters` proxies the Substack RSS feed (30-min edge cache) for the "Fresh from the letters" strip on /recipes; all other requests fall through to assets
+- `reading-list.html` — lead-magnet landing page ("12 Books to Read With Your Middle Schooler"); the Pinterest destination. Trimmed nav on purpose.
+- `assets/reading-list.js` — shared funnel script: handles every `form.rl-form` (POST `/api/reading-list`, success state), injects form styles, and shows the pop-up (20s or exit-intent, once per 14 days, never after signup, never on the landing page). Inline form bands live on index + about.
+- `worker.js` — `POST /api/reading-list` (Resend contact + PDF delivery email; falls back to returning the download URL if email can't send; needs secret `RESEND_API_KEY`, vars in wrangler.jsonc); serves the GSC verification path with a 200 (assets routing 307s `*.html`, which Google's verifier rejects); `/api/letters` proxies the Substack RSS feed (30-min edge cache) for the "Fresh from the letters" strip on /recipes; all other requests fall through to assets
 - `404.html` — branded not-found page (`not_found_handling: "404-page"` in wrangler.jsonc); noindex
 - www → apex 301 lives in `worker.js` (the `_redirects` file cannot do domain-level rules on Workers)
 - security headers site-wide + 1-week browser cache on `/assets/*` — set in `worker.js` (a `_headers` file is ignored for Worker-generated responses)
@@ -42,6 +44,10 @@ that must NOT be publicly served (config, README, `design-system/`).
 
 - Substack: https://rachelfletcher.substack.com/ — publication name **Fletchling Thoughts**, tagline "Learning to be a meaning maker in a world of already but not yet." (subscribe: /subscribe, archive: /archive)
 - Pinterest: https://www.pinterest.com/rachelfletcherwrites/ (domain claimed via meta tag on index)
+
+## Reading-list funnel (lead magnet)
+
+Flow: Pinterest pin → `/reading-list` → `POST /api/reading-list` → Resend contact (segment "Middle School Reading List") + delivery email with the Drive PDF link → manual/Zapier import into Substack. Config: `wrangler.jsonc` vars + secret `RESEND_API_KEY`. Sending requires `rachelfletcherwrites.com` verified in Resend (DNS records).
 
 ## Near-term TODO
 
