@@ -191,8 +191,8 @@ async function readingListSignup(request, env) {
         to: [email],
         reply_to: env.MAIL_REPLY_TO || undefined,
         subject: "Here\u2019s your reading list \ud83d\udcd6",
-        html: deliveryHtml(download),
-        text: deliveryText(download),
+        html: deliveryHtml(download, email, env),
+        text: deliveryText(download, email, env),
         tags: [{ name: "funnel", value: "reading-list" }],
       }),
     });
@@ -244,7 +244,8 @@ function json(obj, status = 200) {
   });
 }
 
-function deliveryText(download) {
+function deliveryText(download, email, env) {
+  const sub = substackLink(email, env);
   return [
     "Here's your reading list.",
     "",
@@ -254,7 +255,7 @@ function deliveryText(download) {
     "",
     "A few of these are the books my sisters and I read by candlelight as tweens (we moved the basement sofa to hide the wax). Some will spark conversations you didn't expect; I've left honest notes on the moments worth talking through. Read them alongside your kid, not ahead of them \u2014 that's the whole trick.",
     "",
-    "You're now on the list for Fletchling Thoughts, my letters on books, home, and making meaning, every other week. If you'd like them straight from Substack, you can subscribe here too: https://rachelfletcher.substack.com/subscribe",
+    "One more click and you'll get Fletchling Thoughts \u2014 my letters on books, home, and making meaning, every other week. Your email is already filled in: " + sub,
     "",
     "Happy reading,",
     "Rachel",
@@ -264,7 +265,12 @@ function deliveryText(download) {
   ].join("\n");
 }
 
-function deliveryHtml(download) {
+function substackLink(email, env) {
+  return (env.SUBSTACK_URL || "https://rachelfletcher.substack.com") + "/subscribe?email=" + encodeURIComponent(email);
+}
+
+function deliveryHtml(download, email, env) {
+  const sub = substackLink(email, env);
   return `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#EAE1CE;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#EAE1CE;"><tr><td align="center" style="padding:32px 16px;">
 <table role="presentation" width="560" cellspacing="0" cellpadding="0" style="max-width:560px;width:100%;background:#F4EEE1;border:1px solid #cfc6b0;">
@@ -278,7 +284,8 @@ function deliveryHtml(download) {
 </td></tr>
 <tr><td style="padding:26px 40px 0;font-family:Georgia,'Times New Roman',serif;font-size:17px;line-height:1.65;color:#33301F;">
   <p style="margin:0 0 16px;">A few of these are the books my sisters and I read by candlelight as tweens (we moved the basement sofa to hide the wax). Some will spark conversations you didn\u2019t expect; I\u2019ve left honest notes on the moments worth talking through. Read them <em>alongside</em> your kid, not ahead of them \u2014 that\u2019s the whole trick.</p>
-  <p style="margin:0 0 16px;">You\u2019re now on the list for <strong style="font-weight:normal;color:#3A4651;">Fletchling Thoughts</strong>, my letters on books, home, and making meaning, every other week. If you\u2019d like them straight from Substack, you can <a href="https://rachelfletcher.substack.com/subscribe" style="color:#6f5a2e;">subscribe here</a> too.</p>
+  <p style="margin:0 0 14px;">One more click and you\u2019ll get <strong style="font-weight:normal;color:#3A4651;">Fletchling Thoughts</strong> \u2014 my letters on books, home, and making meaning, every other week. Your email is already filled in:</p>
+  <p style="margin:0 0 22px;"><a href="${sub}" style="display:inline-block;border:1px solid #3A4651;color:#3A4651;font-family:Georgia,serif;font-size:12.5px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;padding:12px 22px;">Get the letters &rarr;</a></p>
   <p style="margin:0 0 6px;">Happy reading,</p>
   <p style="margin:0;font-size:26px;color:#5A322F;font-style:italic;">Rachel</p>
 </td></tr>

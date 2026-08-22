@@ -7,12 +7,13 @@
   var KEY_DONE = 'rl_subscribed';
   var POPUP_DELAY = 20000;
   var POPUP_COOLDOWN = 14 * 24 * 60 * 60 * 1000;
+  var SUBSTACK = 'https://rachelfletcher.substack.com/subscribe?email=';
   var DOWNLOAD_FALLBACK = 'https://drive.google.com/uc?export=download&id=1ajmWr9mFpPf7vewSfTkmAuKAWlrlMUCp';
 
   function store(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
 
-  function successMarkup(data) {
+  function successMarkup(data, email) {
     var h = '<div class="rl-success" role="status">' +
       '<div style="font-family:\'Monsieur La Doulaise\',cursive; font-size:44px; color:#5A322F; line-height:0.95;">It’s on its way</div>';
     if (data && data.delivered) {
@@ -22,6 +23,8 @@
       h += '<p style="font-size:17px; line-height:1.65; color:#4a4432; margin:12px 0 18px;">You’re on the list. Here’s the reading list itself, no waiting:</p>' +
         '<a class="btn btn-solid" href="' + url + '" style="display:inline-flex; align-items:center; gap:10px; background:#3A4651; color:#F4EEE1; font-family:\'EB Garamond\',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:13px; padding:14px 26px;">Download the PDF <span class="arrow">→</span></a>';
     }
+    h += '<p style="font-size:16px; line-height:1.6; color:#4a4432; margin:18px 0 10px;">One more click gets you the letters themselves — your email is already filled in:</p>' +
+      '<a class="btn btn-ghost" href="' + SUBSTACK + encodeURIComponent(email || '') + '" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; border:1px solid #3A4651; color:#3A4651; font-family:\'EB Garamond\',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px; padding:12px 22px;">Get Fletchling Thoughts <span class="arrow">→</span></a>';
     return h + '</div>';
   }
 
@@ -49,7 +52,7 @@
           if (d.ok) {
             store(KEY_DONE, '1');
             var wrap = document.createElement('div');
-            wrap.innerHTML = successMarkup(d);
+            wrap.innerHTML = successMarkup(d, email.value.trim());
             var node = wrap.firstChild;
             node.classList.add('is-visible'); // survives scroll-reveal containers
             form.parentNode.replaceChild(node, form);

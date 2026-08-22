@@ -47,7 +47,7 @@ that must NOT be publicly served (config, README, `design-system/`).
 
 ## Reading-list funnel (lead magnet)
 
-Flow: Pinterest pin → `/reading-list` → `POST /api/reading-list` → Resend contact (segment "Middle School Reading List") + delivery email with the Drive PDF link → auto-subscribed to Substack via the embed endpoint (`SUBSTACK_SYNC` var; undocumented, fail-safe — check the `substack` field in the POST response; monthly CSV import from the Resend segment as a safety net). Config: `wrangler.jsonc` vars + secret `RESEND_API_KEY`. Sending requires `rachelfletcherwrites.com` verified in Resend (DNS records).
+Flow: Pinterest pin → `/reading-list` → `POST /api/reading-list` → Resend contact (segment "Middle School Reading List") + delivery email with the Drive PDF link → one-click Substack subscribe (success state + delivery email link to `/subscribe?email=…`, prefilled). Server-side subscribe (`SUBSTACK_SYNC`) is OFF: Substack 403s non-browser posts. Safety net: monthly CSV import of the Resend segment into Substack. Config: `wrangler.jsonc` vars + secret `RESEND_API_KEY`. Sending requires `rachelfletcherwrites.com` verified in Resend (DNS records).
 
 ## Near-term TODO
 
