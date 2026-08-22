@@ -199,7 +199,42 @@ async function readingListSignup(request, env) {
     delivered = res.ok;
   } catch (e) { delivered = false; }
 
-  return json(delivered ? { ok: true, delivered: true, contact } : { ok: true, delivered: false, download, contact });
+  // 3. Subscribe them to Fletchling Thoughts on Substack (consent is stated on
+  //    every form). Uses the same endpoint Substack's own embed widget posts to.
+  //    Undocumented, so it's fail-safe: any failure is reported, never fatal.
+  //    Switch off with SUBSTACK_SYNC="off" in wrangler.jsonc vars.
+  let substack = "off";
+  if ((env.SUBSTACK_SYNC || "on") !== "off") {
+    const base = env.SUBSTACK_URL || "https://rachelfletcher.substack.com";
+    try {
+      const form = new URLSearchParams({
+        email,
+        source: "embed",
+        first_url: "https://rachelfletcherwrites.com/reading-list",
+        first_referrer: "https://rachelfletcherwrites.com/",
+        current_url: "https://rachelfletcherwrites.com" + String(body.page || "/reading-list").slice(0, 80),
+        current_referrer: "https://rachelfletcherwrites.com/",
+        first_session_url: "https://rachelfletcherwrites.com/reading-list",
+        first_session_referrer: "https://rachelfletcherwrites.com/",
+      });
+      const sr = await fetch(base + "/api/v1/free?nojs=true", {
+        method: "POST",
+        body: form,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36",
+          "Accept": "text/html,application/xhtml+xml,*/*",
+          "Origin": base,
+          "Referer": base + "/embed",
+        },
+        redirect: "manual",
+      });
+      substack = sr.status;
+      if (sr.status >= 400) substack = sr.status + " " + (await sr.text()).slice(0, 120);
+    } catch (e) { substack = "error " + String(e && e.message || e); }
+  }
+
+  return json(delivered ? { ok: true, delivered: true, contact, substack } : { ok: true, delivered: false, download, contact, substack });
 }
 
 function json(obj, status = 200) {
