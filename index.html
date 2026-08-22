@@ -149,6 +149,7 @@
   /* ---- mobile header/footer: stack the wordmark over a wrapping nav ---- */
   .navlink, .btn { white-space: nowrap; }
   @media (max-width: 700px) {
+    .site-header { position: static; } /* the stacked header is too tall to pin on a phone */
     .site-header > div { flex-direction: column; align-items: center; gap: 14px !important; }
     .site-header nav { flex-wrap: wrap; justify-content: center; gap: 10px 18px !important; font-size: 11.5px !important; }
     .site-header nav .btn { padding: 8px 16px !important; }
