@@ -127,6 +127,15 @@ function feedText(v) {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 async function readingListSignup(request, env) {
+  if (request.method === "GET") {
+    // Health check: config state only, never values.
+    return json({
+      ok: true,
+      configured: Boolean(env.RESEND_API_KEY),
+      segment: Boolean(env.READING_LIST_SEGMENT_ID),
+      from: env.MAIL_FROM || null,
+    });
+  }
   if (request.method !== "POST") {
     return json({ ok: false, error: "POST only" }, 405);
   }
