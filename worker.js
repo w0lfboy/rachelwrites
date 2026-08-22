@@ -255,7 +255,7 @@ function deliveryText(download, email, env) {
     "",
     "It took earning a degree in English Literature for me to learn that as much as I can appreciate a good classic, YA fiction formed and shaped me more than anything else. It\u2019s the books by L\u2019Engle and Pierce that I find myself coming back to year after year, not Faulkner and Fitzgerald. The older I get, the more tenderness I feel for my middle school self who first read these books. As my daughter gets into her tween years, these are the books I most want to share with her, so we can stay weird and wonderful girls together.",
     "",
-    "Want the letters too? Fletchling Thoughts is one click away \u2014 your email is already filled in: " + sub,
+    "Want more recommendations from Rachel? My Substack, Fletchling Thoughts, is just one click away. Recipes, hand crafts, and essays from my home in the Shenandoah Valley: " + sub,
     "",
     "Happy reading,",
     "Rachel",
@@ -284,7 +284,7 @@ function deliveryHtml(download, email, env) {
 </td></tr>
 <tr><td style="padding:26px 40px 0;font-family:Georgia,'Times New Roman',serif;font-size:17px;line-height:1.65;color:#33301F;">
   <p style="margin:0 0 16px;">It took earning a degree in English Literature for me to learn that as much as I can appreciate a good classic, YA fiction formed and shaped me more than anything else. It\u2019s the books by L\u2019Engle and Pierce that I find myself coming back to year after year, not Faulkner and Fitzgerald. The older I get, the more tenderness I feel for my middle school self who first read these books. As my daughter gets into her tween years, these are the books I most want to share with her, so we can stay weird and wonderful girls together.</p>
-  <p style="margin:0 0 14px;">Want the letters too? <strong style="font-weight:normal;color:#3A4651;">Fletchling Thoughts</strong> is one click away \u2014 your email is already filled in:</p>
+  <p style="margin:0 0 14px;">Want more recommendations from Rachel? My Substack, <strong style="font-weight:normal;color:#3A4651;">Fletchling Thoughts</strong>, is just one click away. Recipes, hand crafts, and essays from my home in the Shenandoah Valley.</p>
   <p style="margin:0 0 22px;"><a href="${sub}" style="display:inline-block;border:1px solid #3A4651;color:#3A4651;font-family:Georgia,serif;font-size:12.5px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;padding:12px 22px;">Get the letters &rarr;</a></p>
   <p style="margin:0 0 6px;">Happy reading,</p>
   <p style="margin:0;"><img src="https://rachelfletcherwrites.com/assets/signature-rachel.png" alt="Rachel" width="140" height="53" style="display:block;width:140px;height:auto;border:0;"></p>

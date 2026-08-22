@@ -100,7 +100,7 @@
         '<div style="padding:36px 34px 30px;">' +
           '<div style="font-family:\'EB Garamond\',serif; text-transform:uppercase; letter-spacing:0.32em; font-size:11px; color:#857438; margin-bottom:12px;">A free reading list</div>' +
           '<h2 id="rl-popup-title" style="font-family:\'Cormorant Garamond\',serif; font-weight:500; font-size:30px; line-height:1.1; margin:0; color:#3A4651;">12 Books to Read With Your Middle Schooler</h2>' +
-          '<p style="font-size:16px; line-height:1.62; color:#4a4432; margin:12px 0 18px;">A printable list with summaries, why each book matters, and read-along notes — so you can stay weird and wonderful together.</p>' +
+          '<p style="font-size:15.5px; line-height:1.6; color:#4a4432; margin:12px 0 16px;">What you read in middle school makes you who you are. These twelve books (and spoiler, most of them are series!) are meant for you to read alongside your middle schooler, to foster all that is weird and wonderful in your child, and to remind us older folks to make friends with the middle schooler who still lives inside us all. <a href="/reading-list" style="color:#6f5a2e;">See what\'s inside →</a></p>' +
           '<form class="rl-form" action="/api/reading-list" method="post" data-source="popup" style="position:relative;">' +
             '<label for="rl-email-popup" style="position:absolute; left:-9999px;">Email address</label>' +
             '<input id="rl-email-popup" type="email" name="email" placeholder="your@email.com" required autocomplete="email" inputmode="email">' +
