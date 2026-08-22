@@ -23,8 +23,8 @@
       h += '<p style="font-size:17px; line-height:1.65; color:#4a4432; margin:12px 0 18px;">You’re on the list. Here’s the reading list itself, no waiting:</p>' +
         '<a class="btn btn-solid" href="' + url + '" style="display:inline-flex; align-items:center; gap:10px; background:#3A4651; color:#F4EEE1; font-family:\'EB Garamond\',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:13px; padding:14px 26px;">Download the PDF <span class="arrow">→</span></a>';
     }
-    h += '<p style="font-size:16px; line-height:1.6; color:#4a4432; margin:18px 0 10px;">One more click gets you the letters themselves — your email is already filled in:</p>' +
-      '<a class="btn btn-ghost" href="' + SUBSTACK + encodeURIComponent(email || '') + '" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; border:1px solid #3A4651; color:#3A4651; font-family:\'EB Garamond\',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px; padding:12px 22px;">Get Fletchling Thoughts <span class="arrow">→</span></a>';
+    h += '<p style="font-size:16px; line-height:1.6; color:#4a4432; margin:18px 0 10px;">Want more from Rachel? Fletchling Thoughts on Substack is free — one click, your email is already filled in:</p>' +
+      '<a class="btn btn-ghost" href="' + SUBSTACK + encodeURIComponent(email || '') + '" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; border:1px solid #3A4651; color:#3A4651; font-family:\'EB Garamond\',serif; text-transform:uppercase; letter-spacing:0.2em; font-size:12.5px; padding:12px 22px;">Subscribe for free <span class="arrow">→</span></a>';
     return h + '</div>';
   }
 
