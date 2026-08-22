@@ -164,8 +164,9 @@ async function readingListSignup(request, env) {
   const auth = { "Authorization": "Bearer " + env.RESEND_API_KEY, "Content-Type": "application/json" };
 
   // 1. Store the contact (duplicates are fine — the email still goes out)
+  let contact = null;
   try {
-    await fetch("https://api.resend.com/contacts", {
+    const cr = await fetch("https://api.resend.com/contacts", {
       method: "POST",
       headers: auth,
       body: JSON.stringify({
@@ -175,7 +176,9 @@ async function readingListSignup(request, env) {
         properties: { source: String(body.source || "site").slice(0, 40), page: String(body.page || "").slice(0, 80) },
       }),
     });
-  } catch (e) { /* non-fatal */ }
+    contact = cr.status;
+    if (!cr.ok) contact = cr.status + " " + (await cr.text()).slice(0, 160);
+  } catch (e) { contact = "error " + String(e && e.message || e); }
 
   // 2. Send the delivery email
   let delivered = false;
@@ -196,7 +199,7 @@ async function readingListSignup(request, env) {
     delivered = res.ok;
   } catch (e) { delivered = false; }
 
-  return json(delivered ? { ok: true, delivered: true } : { ok: true, delivered: false, download });
+  return json(delivered ? { ok: true, delivered: true, contact } : { ok: true, delivered: false, download, contact });
 }
 
 function json(obj, status = 200) {
