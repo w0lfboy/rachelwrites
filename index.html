@@ -146,6 +146,14 @@
     .cards-grid { grid-template-columns: 1fr !important; }
     .footer-row { flex-direction: column !important; align-items: flex-start !important; }
   }
+  /* ---- mobile header/footer: stack the wordmark over a wrapping nav ---- */
+  .navlink, .btn { white-space: nowrap; }
+  @media (max-width: 700px) {
+    .site-header > div { flex-direction: column; align-items: center; gap: 14px !important; }
+    .site-header nav { flex-wrap: wrap; justify-content: center; gap: 10px 18px !important; font-size: 11.5px !important; }
+    .site-header nav .btn { padding: 8px 16px !important; }
+    .footer-row > div:last-child { flex-wrap: wrap; gap: 12px 22px !important; }
+  }
   @media (max-width: 560px) {
     .site-header { padding: 22px 22px !important; }
     .site-header nav { gap: 20px !important; }
