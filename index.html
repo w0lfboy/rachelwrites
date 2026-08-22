@@ -103,6 +103,15 @@
   .card:hover { transform: translateY(-4px); box-shadow: 0 26px 46px -28px rgba(20,26,30,0.42); }
   /* cards on the Fig Plum band carry a resting shadow so they lift off the dark ground */
   #find .card { box-shadow: 0 22px 44px -26px rgba(20,26,30,0.75); }
+  /* homepage lead-magnet band is slate: flip its text + button colours */
+  #reading-list h2 { color:#F4EEE1 !important; }
+  #reading-list p { color:#CDBFA4 !important; }
+  #reading-list p a { color:#EDE3CC; text-decoration:underline; text-underline-offset:3px; }
+  #reading-list p a:hover { color:#F4EEE1; }
+  #reading-list .rl-form button { background:#EAE1CE !important; color:#3A4651 !important; }
+  #reading-list .rl-form button:hover { background:#5A322F !important; color:#F4EEE1 !important; }
+  #reading-list .rl-msg { color:#EDE3CC !important; }
+  #reading-list img { border-color: rgba(237,227,204,0.25) !important; }
   #find .card:hover { box-shadow: 0 34px 60px -28px rgba(20,26,30,0.9); }
   .card:hover .cardcta { color:#3A4651; }
   .cardcta { transition: color .25s var(--ease); }
@@ -204,7 +213,7 @@
   </section>
 
   <!-- ===================== THE NOVEL (teaser) ===================== -->
-  <section id="novel" style="max-width:1200px; margin:0 auto; padding:96px 40px 0;">
+  <section id="novel" style="max-width:1200px; margin:0 auto; padding:96px 40px 88px;">
     <div style="max-width:680px; margin:0 auto; text-align:center;" data-reveal-stagger>
       <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.34em; font-size:12px; color:#857438; margin-bottom:18px;">The Novel</div>
       <h2 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-style:italic; font-size:clamp(30px,4vw,44px); line-height:1.14; margin:0; color:#3A4651; text-wrap:balance;">The Flower Farm at the End of the World</h2>
@@ -258,12 +267,12 @@
 
   <!-- ===================== FREE READING LIST (lead magnet) ===================== -->
   <section id="reading-list" style="max-width:1200px; margin:0 auto; padding:80px 40px 0; width:100%;">
-    <div style="background:#F4EEE1; border:1px solid rgba(58,70,81,0.2); padding:44px 44px; position:relative;">
-      <div style="position:absolute; inset:12px; border:1px solid rgba(58,70,81,0.14); pointer-events:none;"></div>
+    <div style="background:#3A4651; color:#EDE3CC; border:1px solid rgba(58,70,81,0.3); padding:48px 48px; position:relative; box-shadow:0 30px 60px -36px rgba(20,26,30,0.6);">
+      <div style="position:absolute; inset:12px; border:1px solid rgba(237,227,204,0.16); pointer-events:none;"></div>
       <div class="rl-band-grid" style="position:relative;" data-reveal>
         <a href="/reading-list" style="display:block; max-width:200px; margin:0 auto;"><img src="assets/reading-list-cover-sm.webp" alt="Twelve Books to Read with Your Middle Schooler — free reading list" width="510" height="660" loading="lazy" style="display:block; width:100%; height:auto; box-shadow:0 24px 44px -26px rgba(20,26,30,0.6); border:1px solid rgba(58,70,81,0.18);"></a>
         <div>
-          <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.34em; font-size:12px; color:#857438; margin-bottom:12px;">A free reading list</div>
+          <div style="font-family:'EB Garamond',serif; text-transform:uppercase; letter-spacing:0.34em; font-size:12px; color:#CDBFA4; margin-bottom:12px;">A free reading list</div>
           <h2 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(26px,3.4vw,38px); line-height:1.1; margin:0; color:#3A4651;">12 Books to Read With Your Middle Schooler</h2>
           <p style="font-size:17px; line-height:1.68; color:#4a4432; margin:12px 0 22px; max-width:560px;">What you read in middle school makes you who you are. These twelve books (and spoiler, most of them are series!) are meant for you to read alongside your middle schooler, to foster all that is weird and wonderful in your child, and to remind us older folks to make friends with the middle schooler who still lives inside us all. <a href="/reading-list">See what's inside &rarr;</a></p>
           <form class="rl-form" action="/api/reading-list" method="post" data-source="inline" style="position:relative; max-width:520px;">
