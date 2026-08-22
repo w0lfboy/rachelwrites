@@ -253,9 +253,9 @@ function deliveryText(download, email, env) {
     "",
     "Download the PDF: " + download,
     "",
-    "A few of these are the books my sisters and I read by candlelight as tweens (we moved the basement sofa to hide the wax). Some will spark conversations you didn't expect; I've left honest notes on the moments worth talking through. Read them alongside your kid, not ahead of them \u2014 that's the whole trick.",
+    "It took earning a degree in English Literature for me to learn that as much as I can appreciate a good classic, YA fiction formed and shaped me more than anything else. It\u2019s the books by L\u2019Engle and Pierce that I find myself coming back to year after year, not Faulkner and Fitzgerald. The older I get, the more tenderness I feel for my middle school self who first read these books. As my daughter gets into her tween years, these are the books I most want to share with her, so we can stay weird and wonderful girls together.",
     "",
-    "One more click and you'll get Fletchling Thoughts \u2014 my letters on books, home, and making meaning, every other week. Your email is already filled in: " + sub,
+    "Want the letters too? Fletchling Thoughts is one click away \u2014 your email is already filled in: " + sub,
     "",
     "Happy reading,",
     "Rachel",
@@ -283,11 +283,11 @@ function deliveryHtml(download, email, env) {
   <a href="${download}" style="display:inline-block;background:#3A4651;color:#F4EEE1;font-family:Georgia,serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;padding:15px 30px;">Download the PDF &rarr;</a>
 </td></tr>
 <tr><td style="padding:26px 40px 0;font-family:Georgia,'Times New Roman',serif;font-size:17px;line-height:1.65;color:#33301F;">
-  <p style="margin:0 0 16px;">A few of these are the books my sisters and I read by candlelight as tweens (we moved the basement sofa to hide the wax). Some will spark conversations you didn\u2019t expect; I\u2019ve left honest notes on the moments worth talking through. Read them <em>alongside</em> your kid, not ahead of them \u2014 that\u2019s the whole trick.</p>
-  <p style="margin:0 0 14px;">One more click and you\u2019ll get <strong style="font-weight:normal;color:#3A4651;">Fletchling Thoughts</strong> \u2014 my letters on books, home, and making meaning, every other week. Your email is already filled in:</p>
+  <p style="margin:0 0 16px;">It took earning a degree in English Literature for me to learn that as much as I can appreciate a good classic, YA fiction formed and shaped me more than anything else. It\u2019s the books by L\u2019Engle and Pierce that I find myself coming back to year after year, not Faulkner and Fitzgerald. The older I get, the more tenderness I feel for my middle school self who first read these books. As my daughter gets into her tween years, these are the books I most want to share with her, so we can stay weird and wonderful girls together.</p>
+  <p style="margin:0 0 14px;">Want the letters too? <strong style="font-weight:normal;color:#3A4651;">Fletchling Thoughts</strong> is one click away \u2014 your email is already filled in:</p>
   <p style="margin:0 0 22px;"><a href="${sub}" style="display:inline-block;border:1px solid #3A4651;color:#3A4651;font-family:Georgia,serif;font-size:12.5px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;padding:12px 22px;">Get the letters &rarr;</a></p>
   <p style="margin:0 0 6px;">Happy reading,</p>
-  <p style="margin:0;font-size:26px;color:#5A322F;font-style:italic;">Rachel</p>
+  <p style="margin:0;"><img src="https://rachelfletcherwrites.com/assets/signature-rachel.png" alt="Rachel" width="140" height="53" style="display:block;width:140px;height:auto;border:0;"></p>
 </td></tr>
 <tr><td style="padding:30px 40px 34px;font-family:Georgia,serif;font-size:12.5px;line-height:1.6;color:#8b8270;border-top:1px solid #e2d9c3;margin-top:20px;">
   Rachel Fletcher &middot; Harrisonburg, Virginia &middot; <a href="https://rachelfletcherwrites.com/" style="color:#8b8270;">rachelfletcherwrites.com</a><br>
