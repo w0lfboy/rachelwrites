@@ -14,6 +14,8 @@
     "READING_LIST_DOWNLOAD_URL": "https://drive.google.com/uc?export=download&id=1ajmWr9mFpPf7vewSfTkmAuKAWlrlMUCp",
     "READING_LIST_SEGMENT_ID": "d1b8c9eb-4a47-433f-8667-211e7b53c939",
     "MAIL_FROM": "Rachel Fletcher <hello@rachelfletcherwrites.com>",
+    // Every signup sends a notification email here. Empty = no notifications.
+    "NOTIFY_TO": "",
     // Server-side Substack subscribe is OFF: Substack's subscribe endpoint sits
     // behind a JS challenge (403 from servers, Aug 2026). Instead, the success
     // state + delivery email link to /subscribe?email=… (one click, prefilled).

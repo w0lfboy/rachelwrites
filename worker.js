@@ -42,7 +42,7 @@ export default {
       return latestLetters(ctx);
     }
     if (url.pathname === "/api/reading-list") {
-      return readingListSignup(request, env);
+      return readingListSignup(request, env, ctx);
     }
     if (url.pathname === "/googled7fff89c63962e50.html") {
       return new Response("google-site-verification: googled7fff89c63962e50.html", {
@@ -126,7 +126,7 @@ function feedText(v) {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-async function readingListSignup(request, env) {
+async function readingListSignup(request, env, ctx) {
   if (request.method === "GET") {
     // Health check: config state only, never values.
     return json({
@@ -199,7 +199,32 @@ async function readingListSignup(request, env) {
     delivered = res.ok;
   } catch (e) { delivered = false; }
 
-  // 3. Subscribe them to Fletchling Thoughts on Substack (consent is stated on
+  // 3. Tell Rachel (fire-and-forget so the visitor never waits on it)
+  if (env.NOTIFY_TO) {
+    const note = fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: auth,
+      body: JSON.stringify({
+        from: env.MAIL_FROM || "Rachel Fletcher <hello@rachelfletcherwrites.com>",
+        to: [env.NOTIFY_TO],
+        subject: "\ud83c\udf31 New reading-list signup: " + email,
+        text: [
+          "Someone just asked for the reading list.",
+          "",
+          "Email:  " + email,
+          "Source: " + String(body.source || "site"),
+          "Page:   " + String(body.page || ""),
+          "PDF email delivered: " + (delivered ? "yes" : "no (they got the direct link)"),
+          "",
+          "All signups: https://resend.com/contacts (segment: Middle School Reading List)",
+        ].join("\n"),
+        tags: [{ name: "funnel", value: "reading-list-notify" }],
+      }),
+    }).catch(() => {});
+    ctx.waitUntil(note);
+  }
+
+  // 4. Subscribe them to Fletchling Thoughts on Substack (consent is stated on
   //    every form). Uses the same endpoint Substack's own embed widget posts to.
   //    Undocumented, so it's fail-safe: any failure is reported, never fatal.
   //    Switch off with SUBSTACK_SYNC="off" in wrangler.jsonc vars.
