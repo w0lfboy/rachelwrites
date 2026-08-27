@@ -13,6 +13,7 @@
   "vars": {
     "READING_LIST_DOWNLOAD_URL": "https://drive.google.com/uc?export=download&id=1ajmWr9mFpPf7vewSfTkmAuKAWlrlMUCp",
     "READING_LIST_SEGMENT_ID": "d1b8c9eb-4a47-433f-8667-211e7b53c939",
+    "KNITTING_SEGMENT_ID": "dfd8e073-bfac-4521-ac8f-17593afa399e",
     "MAIL_FROM": "Rachel Fletcher <hello@rachelfletcherwrites.com>",
     // Every signup sends a notification email here. Empty = no notifications.
     "NOTIFY_TO": "rachel@rachelfletcherwrites.com",

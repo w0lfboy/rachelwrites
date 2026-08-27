@@ -9,12 +9,12 @@
 //     pass through Worker code, so they're attached here instead.
 //  4. /api/letters — server-side proxy of the Substack RSS feed (30-min edge
 //     cache) that powers the "Fresh from the letters" strip on /recipes.
-//  5. POST /api/reading-list — the lead-magnet funnel: validates the email,
-//     stores the contact in Resend (segment "Middle School Reading List"),
-//     and emails the PDF. If email can't send (e.g. RESEND_API_KEY unset or
-//     domain unverified), the response carries the download URL so the
-//     visitor still gets the list. Needs secret RESEND_API_KEY; vars in
-//     wrangler.jsonc.
+//  5. POST /api/reading-list — the lead-magnet funnel for EVERY magnet (see
+//     the MAGNETS table below; the form posts which one). Validates the email,
+//     stores the contact in its Resend segment, emails the file, and notifies
+//     Rachel. If email can't send (e.g. RESEND_API_KEY unset or domain
+//     unverified), the response carries the download URL so the visitor still
+//     gets the file. Needs secret RESEND_API_KEY; vars in wrangler.jsonc.
 // Asset serving itself (including the 404.html not-found page) still comes
 // from env.ASSETS.
 
@@ -122,9 +122,55 @@ function feedText(v) {
     .trim();
 }
 
-/* ---------------- Reading-list lead magnet ---------------- */
+/* ---------------- Lead magnets ----------------
+   One endpoint serves every magnet. Add a magnet by adding an entry here
+   (and a segment id in wrangler.jsonc vars); the page just posts
+   {magnet: "<key>"} from its form's data-magnet attribute. */
+
+const MAGNETS = {
+  "reading-list": {
+    label: "12 Books to Read With Your Middle Schooler",
+    file: "/assets/guides/twelve-books-middle-schooler.pdf", // unused: Drive-hosted, see downloadFor()
+    segmentVar: "READING_LIST_SEGMENT_ID",
+    subject: "Here’s your reading list 📖",
+    eyebrow: "A reading list",
+    title: "Twelve Books to Read with Your Middle Schooler",
+    tagline: "so you can stay weird and wonderful together",
+    cta: "Download the PDF",
+    body: [
+      "It took earning a degree in English Literature for me to learn that as much as I can appreciate a good classic, YA fiction formed and shaped me more than anything else. It’s the books by L’Engle and Pierce that I find myself coming back to year after year, not Faulkner and Fitzgerald. The older I get, the more tenderness I feel for my middle school self who first read these books. As my daughter gets into her tween years, these are the books I most want to share with her, so we can stay weird and wonderful girls together.",
+    ],
+  },
+  "knitting": {
+    label: "Learn to Knit an Heirloom Wardrobe",
+    file: "/assets/guides/learn-to-knit-an-heirloom-wardrobe.pdf",
+    segmentVar: "KNITTING_SEGMENT_ID",
+    subject: "Here’s your knitting guide 🧶",
+    eyebrow: "A knitting guide",
+    title: "Learn to Knit an Heirloom Wardrobe",
+    tagline: "seven steps to make more than bad rectangles",
+    cta: "Download the guide",
+    body: [
+      "When I was a young girl, I sat in my great-grandmothers’ sitting room eating tootsie rolls and learning to knit. For years afterward I honored that legacy by making bad rectangles in terrible chunky chenille yarn — pot holders, doll blankets, scarves that were either far too short or much too long.",
+      "It took me until my thirties to make my first sweater. This guide is the path I wish I’d had: two stitches, the right needles, how to read yarn, a hat, and then a sweater. Will you have a finished sweater tomorrow? No. Can you have one in the next two months? You sure can.",
+    ],
+  },
+};
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const SITE = "https://rachelfletcherwrites.com";
+
+function magnetFor(body) {
+  const key = String(body && body.magnet || "reading-list");
+  return MAGNETS[key] ? key : "reading-list";
+}
+
+function downloadFor(key, env) {
+  // The reading list stays on its existing Drive link; everything else is
+  // served straight from the site.
+  if (key === "reading-list") return env.READING_LIST_DOWNLOAD_URL;
+  return SITE + MAGNETS[key].file;
+}
 
 async function readingListSignup(request, env, ctx) {
   if (request.method === "GET") {
@@ -132,7 +178,7 @@ async function readingListSignup(request, env, ctx) {
     return json({
       ok: true,
       configured: Boolean(env.RESEND_API_KEY),
-      segment: Boolean(env.READING_LIST_SEGMENT_ID),
+      magnets: Object.keys(MAGNETS).filter((k) => Boolean(env[MAGNETS[k].segmentVar])),
       from: env.MAIL_FROM || null,
     });
   }
@@ -155,13 +201,17 @@ async function readingListSignup(request, env, ctx) {
     return json({ ok: false, error: "That email doesn't look quite right." }, 400);
   }
 
-  const download = env.READING_LIST_DOWNLOAD_URL;
+  const key = magnetFor(body);
+  const magnet = MAGNETS[key];
+  const download = downloadFor(key, env);
+
   if (!env.RESEND_API_KEY) {
-    // Not configured yet: still hand over the list so no visitor is stranded.
+    // Not configured yet: still hand over the file so no visitor is stranded.
     return json({ ok: true, delivered: false, download, note: "RESEND_API_KEY not set" });
   }
 
   const auth = { "Authorization": "Bearer " + env.RESEND_API_KEY, "Content-Type": "application/json" };
+  const segmentId = env[magnet.segmentVar];
 
   // 1. Store the contact (duplicates are fine — the email still goes out)
   let contact = null;
@@ -172,7 +222,7 @@ async function readingListSignup(request, env, ctx) {
       body: JSON.stringify({
         email,
         unsubscribed: false,
-        segments: env.READING_LIST_SEGMENT_ID ? [{ id: env.READING_LIST_SEGMENT_ID }] : undefined,
+        segments: segmentId ? [{ id: segmentId }] : undefined,
         properties: { source: String(body.source || "site").slice(0, 40), page: String(body.page || "").slice(0, 80) },
       }),
     });
@@ -190,10 +240,10 @@ async function readingListSignup(request, env, ctx) {
         from: env.MAIL_FROM || "Rachel Fletcher <hello@rachelfletcherwrites.com>",
         to: [email],
         reply_to: env.MAIL_REPLY_TO || undefined,
-        subject: "Here\u2019s your reading list \ud83d\udcd6",
-        html: deliveryHtml(download, email, env),
-        text: deliveryText(download, email, env),
-        tags: [{ name: "funnel", value: "reading-list" }],
+        subject: magnet.subject,
+        html: deliveryHtml(magnet, download, email, env),
+        text: deliveryText(magnet, download, email, env),
+        tags: [{ name: "funnel", value: key }],
       }),
     });
     delivered = res.ok;
@@ -207,48 +257,37 @@ async function readingListSignup(request, env, ctx) {
       body: JSON.stringify({
         from: env.MAIL_FROM || "Rachel Fletcher <hello@rachelfletcherwrites.com>",
         to: [env.NOTIFY_TO],
-        subject: "\ud83c\udf31 New reading-list signup: " + email,
+        subject: "🌱 New signup (" + magnet.label + "): " + email,
         text: [
-          "Someone just asked for the reading list.",
+          "Someone just asked for: " + magnet.label,
           "",
           "Email:  " + email,
           "Source: " + String(body.source || "site"),
           "Page:   " + String(body.page || ""),
           "PDF email delivered: " + (delivered ? "yes" : "no (they got the direct link)"),
           "",
-          "All signups: https://resend.com/contacts (segment: Middle School Reading List)",
+          "All signups: https://resend.com/contacts",
         ].join("\n"),
-        tags: [{ name: "funnel", value: "reading-list-notify" }],
+        tags: [{ name: "funnel", value: key + "-notify" }],
       }),
     }).catch(() => {});
     ctx.waitUntil(note);
   }
 
-  // 4. Subscribe them to Fletchling Thoughts on Substack (consent is stated on
-  //    every form). Uses the same endpoint Substack's own embed widget posts to.
-  //    Undocumented, so it's fail-safe: any failure is reported, never fatal.
-  //    Switch off with SUBSTACK_SYNC="off" in wrangler.jsonc vars.
+  // 4. Substack sync stays off: Substack's subscribe endpoint sits behind a JS
+  //    challenge and 403s server-side posts. The success state and the delivery
+  //    email link to /subscribe?email=… instead (one click, prefilled).
   let substack = "off";
-  if ((env.SUBSTACK_SYNC || "on") !== "off") {
+  if ((env.SUBSTACK_SYNC || "off") !== "off") {
     const base = env.SUBSTACK_URL || "https://rachelfletcher.substack.com";
     try {
-      const form = new URLSearchParams({
-        email,
-        source: "embed",
-        first_url: "https://rachelfletcherwrites.com/reading-list",
-        first_referrer: "https://rachelfletcherwrites.com/",
-        current_url: "https://rachelfletcherwrites.com" + String(body.page || "/reading-list").slice(0, 80),
-        current_referrer: "https://rachelfletcherwrites.com/",
-        first_session_url: "https://rachelfletcherwrites.com/reading-list",
-        first_session_referrer: "https://rachelfletcherwrites.com/",
-      });
+      const form = new URLSearchParams({ email, source: "embed" });
       const sr = await fetch(base + "/api/v1/free?nojs=true", {
         method: "POST",
         body: form,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36",
-          "Accept": "text/html,application/xhtml+xml,*/*",
           "Origin": base,
           "Referer": base + "/embed",
         },
@@ -259,7 +298,9 @@ async function readingListSignup(request, env, ctx) {
     } catch (e) { substack = "error " + String(e && e.message || e); }
   }
 
-  return json(delivered ? { ok: true, delivered: true, contact, substack } : { ok: true, delivered: false, download, contact, substack });
+  return json(delivered
+    ? { ok: true, delivered: true, magnet: key, contact, substack }
+    : { ok: true, delivered: false, magnet: key, download, contact, substack });
 }
 
 function json(obj, status = 200) {
@@ -269,54 +310,53 @@ function json(obj, status = 200) {
   });
 }
 
-function deliveryText(download, email, env) {
+function substackLink(email, env) {
+  return (env.SUBSTACK_URL || "https://rachelfletcher.substack.com") + "/subscribe?email=" + encodeURIComponent(email);
+}
+
+function deliveryText(magnet, download, email, env) {
   const sub = substackLink(email, env);
   return [
-    "Here's your reading list.",
+    magnet.title + " — " + magnet.tagline + ".",
     "",
-    "Twelve Books to Read with Your Middle Schooler \u2014 so you can stay weird and wonderful together.",
+    magnet.cta + ": " + download,
     "",
-    "Download the PDF: " + download,
-    "",
-    "It took earning a degree in English Literature for me to learn that as much as I can appreciate a good classic, YA fiction formed and shaped me more than anything else. It\u2019s the books by L\u2019Engle and Pierce that I find myself coming back to year after year, not Faulkner and Fitzgerald. The older I get, the more tenderness I feel for my middle school self who first read these books. As my daughter gets into her tween years, these are the books I most want to share with her, so we can stay weird and wonderful girls together.",
+    magnet.body.join("\n\n"),
     "",
     "Want more recommendations from Rachel? My Substack, Fletchling Thoughts, is just one click away. Recipes, hand crafts, and essays from my home in the Shenandoah Valley. Subscribe for free: " + sub,
     "",
     "Happy reading,",
     "Rachel",
     "",
-    "Rachel Fletcher \u00b7 Harrisonburg, Virginia \u00b7 rachelfletcherwrites.com",
+    "Rachel Fletcher · Harrisonburg, Virginia · rachelfletcherwrites.com",
     "Not your thing? Reply with 'unsubscribe' and I'll take you off the list.",
   ].join("\n");
 }
 
-function substackLink(email, env) {
-  return (env.SUBSTACK_URL || "https://rachelfletcher.substack.com") + "/subscribe?email=" + encodeURIComponent(email);
-}
-
-function deliveryHtml(download, email, env) {
+function deliveryHtml(magnet, download, email, env) {
   const sub = substackLink(email, env);
+  const paras = magnet.body.map((t) => '<p style="margin:0 0 16px;">' + t + "</p>").join("\n  ");
   return `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#EAE1CE;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#EAE1CE;"><tr><td align="center" style="padding:32px 16px;">
 <table role="presentation" width="560" cellspacing="0" cellpadding="0" style="max-width:560px;width:100%;background:#F4EEE1;border:1px solid #cfc6b0;">
 <tr><td style="padding:40px 40px 8px;text-align:center;font-family:Georgia,'Times New Roman',serif;">
-  <div style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#857438;">A reading list</div>
-  <h1 style="font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:30px;line-height:1.15;color:#3A4651;margin:14px 0 0;">Twelve Books to Read with Your Middle Schooler</h1>
-  <div style="font-style:italic;font-size:17px;color:#5A322F;margin-top:10px;">so you can stay weird and wonderful together</div>
+  <div style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#857438;">${magnet.eyebrow}</div>
+  <h1 style="font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:30px;line-height:1.15;color:#3A4651;margin:14px 0 0;">${magnet.title}</h1>
+  <div style="font-style:italic;font-size:17px;color:#5A322F;margin-top:10px;">${magnet.tagline}</div>
 </td></tr>
 <tr><td align="center" style="padding:26px 40px 8px;">
-  <a href="${download}" style="display:inline-block;background:#3A4651;color:#F4EEE1;font-family:Georgia,serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;padding:15px 30px;">Download the PDF &rarr;</a>
+  <a href="${download}" style="display:inline-block;background:#3A4651;color:#F4EEE1;font-family:Georgia,serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;padding:15px 30px;">${magnet.cta} &rarr;</a>
 </td></tr>
 <tr><td style="padding:26px 40px 0;font-family:Georgia,'Times New Roman',serif;font-size:17px;line-height:1.65;color:#33301F;">
-  <p style="margin:0 0 16px;">It took earning a degree in English Literature for me to learn that as much as I can appreciate a good classic, YA fiction formed and shaped me more than anything else. It\u2019s the books by L\u2019Engle and Pierce that I find myself coming back to year after year, not Faulkner and Fitzgerald. The older I get, the more tenderness I feel for my middle school self who first read these books. As my daughter gets into her tween years, these are the books I most want to share with her, so we can stay weird and wonderful girls together.</p>
-  <p style="margin:0 0 14px;">Want more recommendations from Rachel? My Substack, <strong style="font-weight:normal;color:#3A4651;">Fletchling Thoughts</strong>, is just one click away. Recipes, hand crafts, and essays from my home in the Shenandoah Valley. Subscribe for free \u2014 your email is already filled in.</p>
+  ${paras}
+  <p style="margin:0 0 14px;">Want more recommendations from Rachel? My Substack, <strong style="font-weight:normal;color:#3A4651;">Fletchling Thoughts</strong>, is just one click away. Recipes, hand crafts, and essays from my home in the Shenandoah Valley. Subscribe for free — your email is already filled in.</p>
   <p style="margin:0 0 22px;"><a href="${sub}" style="display:inline-block;border:1px solid #3A4651;color:#3A4651;font-family:Georgia,serif;font-size:12.5px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;padding:12px 22px;">Subscribe for free &rarr;</a></p>
   <p style="margin:0 0 6px;">Happy reading,</p>
-  <p style="margin:0;"><img src="https://rachelfletcherwrites.com/assets/signature-rachel.png" alt="Rachel" width="140" height="53" style="display:block;width:140px;height:auto;border:0;"></p>
+  <p style="margin:0;"><img src="${SITE}/assets/signature-rachel.png" alt="Rachel" width="140" height="53" style="display:block;width:140px;height:auto;border:0;"></p>
 </td></tr>
 <tr><td style="padding:30px 40px 34px;font-family:Georgia,serif;font-size:12.5px;line-height:1.6;color:#8b8270;border-top:1px solid #e2d9c3;margin-top:20px;">
-  Rachel Fletcher &middot; Harrisonburg, Virginia &middot; <a href="https://rachelfletcherwrites.com/" style="color:#8b8270;">rachelfletcherwrites.com</a><br>
-  Not your thing? Reply with &ldquo;unsubscribe&rdquo; and I\u2019ll take you off the list.
+  Rachel Fletcher &middot; Harrisonburg, Virginia &middot; <a href="${SITE}/" style="color:#8b8270;">rachelfletcherwrites.com</a><br>
+  Not your thing? Reply with &ldquo;unsubscribe&rdquo; and I&rsquo;ll take you off the list.
 </td></tr>
 </table></td></tr></table></body></html>`;
 }
